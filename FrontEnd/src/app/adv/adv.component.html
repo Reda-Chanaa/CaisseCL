@@ -1,0 +1,132 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">ADV</h4>
+                </div>
+                <div class="card-body">
+                    <br />
+                    <form class="ng-untouched ng-pristine ng-invalid" #myForm="ngForm" ngNativeValidate>
+                        <div>
+                            <label for="file"> <b>Fichier ADV :</b></label>
+                            <input type="file" #fileInput name="File Upload" id="csvFile1"
+                                (change)="fileChangeListener1($event)" accept=".xls" />
+                        </div>
+                        <br />
+                        <label>Choisissez votre type de transaction :</label>
+                        <br />
+                        <div>
+                            <mat-radio-group aria-label="Selectionner une option" [(ngModel)]="selections"
+                                name="selections">
+                                <mat-radio-button value='credit' name="credit">Crédit &nbsp;&nbsp;&nbsp;
+                                </mat-radio-button>
+                                <mat-radio-button value='debit' name="debit">Débit &nbsp;&nbsp;&nbsp;
+                                </mat-radio-button>&nbsp;&nbsp;&nbsp;
+                            </mat-radio-group>
+                        </div>
+                        <br />
+                        <br />
+                        <label [hidden]="phrase === ''"> <b>{{phrase}}</b></label>
+                        <br />
+                        <br />
+                        <button (click)="deleteData()" [hidden]="dataSource.data.length === 0"
+                            style="background-color: rgb(256,54,54);" class="btn pull-right">
+                            <b>Supprimer le tableau</b>
+                        </button>
+
+                        <button (click)="deletePhrase()" [hidden]="phrase ===''"
+                            style="background-color: rgb(256,54,54);" class="btn pull-right">
+                            <b>Supprimer les sommes</b>
+                        </button>
+
+                        &nbsp;&nbsp;&nbsp;
+                        <button (click)="createFile()" [hidden]="dataSource.data.length !== 0"
+                            style="background-color: rgb(256,54,54);" class="btn pull-right">
+                            <b>Générer le tableau</b>
+                        </button>
+
+                        &nbsp;&nbsp;&nbsp;
+                        <button (click)="createPhrase()" [hidden]="phrase !==''"
+                            style="background-color: rgb(256,54,54);" class="btn pull-right">
+                            <b>Générer les sommes</b>
+                        </button>
+                    <br />
+                    </form>
+                    <br />
+                    <br />
+                    <mat-spinner style="stroke: rgb(256,54,54);" strokeWidth="3" [diameter]="100"
+                        *ngIf="dataSource.data.length === 0 && value === 0  && phrase === ''">
+                    </mat-spinner>
+                    <div #TABLE class="table-responsive" [hidden]="dataSource.data.length === 0">
+
+                        <!--Table-->
+
+                        <table id="reporting" mat-table bordered="true" matTableExporter #exporter="matTableExporter"
+                            class="mat-elevation-z8 table-hover table" [dataSource]="dataSource">
+
+                            <ng-container matColumnDef="Transaction">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Transaction
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.Transaction }} </b>
+                                </td>
+
+                            </ng-container>
+
+                            <ng-container matColumnDef="Commande">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Dossier
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.Commande }} </b>
+                                </td>
+
+                            </ng-container>
+
+                            <ng-container matColumnDef="Mode">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Mode pmt
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.Mode }} </b>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Montant">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Montant init.
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.Montant }} </b>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Commentaires">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Commentaires
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.Commentaires }} </b>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+                            <tr mat-row *matRowDef="let row; columns: getDisplayedColumns()"></tr>
+                        </table>
+                        <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+                        <div class="export-container">
+                            <button style="background-color: rgb(256,54,54);" class="btn pull-right" mat-raised-button
+                                (click)="exporter.exportTable('xlsx', {fileName:date , sheet: 'caisses', Props: {Author: 'Reda CHANAA'}})">Exporter
+                                en Excel</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
