@@ -906,7 +906,7 @@ fieldset[disabled] .btn-warning.active {
 }
 
 .btn-danger {
-  background-color: #FF3636;
+  background-color: #f44133;
   color: #FFFFFF;
 }
 
@@ -954,13 +954,13 @@ fieldset[disabled] .btn-danger:focus,
 fieldset[disabled] .btn-danger.focus,
 fieldset[disabled] .btn-danger:active,
 fieldset[disabled] .btn-danger.active {
-  background-color: #FF3636;
-  border-color: #FF3636;
+  background-color: #f44133;
+  border-color: #f44133;
 }
 
 .btn-danger.btn-simple {
-  color: #FF3636;
-  border-color: #FF3636;
+  color: #f44133;
+  border-color: #f44133;
 }
 
 .btn-danger.btn-simple:hover,
@@ -973,7 +973,7 @@ fieldset[disabled] .btn-danger.active {
 }
 
 .btn-danger.btn-link {
-  color: #FF3636;
+  color: #f44133;
 }
 
 .btn-danger.btn-link:hover,
@@ -1039,7 +1039,7 @@ fieldset[disabled] .btn-neutral.active {
 }
 
 .btn-neutral.btn-danger {
-  color: #FF3636;
+  color: #f44133;
 }
 
 .btn-neutral.btn-danger:hover,
@@ -1380,7 +1380,7 @@ fieldset[disabled] .btn-link.active {
 .has-danger.input-group-focus .input-group-prepend .input-group-text,
 .has-danger.input-group-focus .input-group-append .input-group-text {
   border-color: #ffcfcf;
-  color: #FF3636;
+  color: #f44133;
   background-color: rgba(222, 222, 222, 0.1);
 }
 
@@ -1431,11 +1431,11 @@ fieldset[disabled] .btn-link.active {
 
 .has-danger:after {
   content: "\ea53";
-  color: #FF3636;
+  color: #f44133;
 }
 
 .has-danger.form-check .form-check-label {
-  color: #FF3636;
+  color: #f44133;
 }
 
 .form-group.no-border.form-control-lg .input-group-append .input-group-text,
@@ -1579,7 +1579,7 @@ fieldset[disabled] .btn-link.active {
 
 .has-error .form-control-feedback,
 .has-error .control-label {
-  color: #FF3636;
+  color: #f44133;
 }
 
 .has-success .form-control-feedback,
@@ -1617,7 +1617,7 @@ fieldset[disabled] .btn-link.active {
 
 .has-danger .form-control:focus+.input-group-append .input-group-text,
 .has-danger .form-control:focus+.input-group-prepend .input-group-text {
-  color: #FF3636;
+  color: #f44133;
 }
 
 .has-success .form-control:focus+.input-group-append .input-group-text,
@@ -1952,7 +1952,7 @@ a.text-warning:hover {
 .text-danger,
 a.text-danger:focus,
 a.text-danger:hover {
-  color: #FF3636 !important;
+  color: #f44133 !important;
 }
 
 .text-gray,
@@ -1985,12 +1985,12 @@ a.text-gray:hover {
 }
 
 .blockquote.blockquote-danger {
-  border-color: #FF3636;
-  color: #FF3636;
+  border-color: #f44133;
+  color: #f44133;
 }
 
 .blockquote.blockquote-danger small {
-  color: #FF3636;
+  color: #f44133;
 }
 
 .blockquote.blockquote-white {
@@ -2519,7 +2519,7 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
 }
 
 .bg-danger {
-  background-color: #FF3636 !important;
+  background-color: #f44133 !important;
 }
 
 .bg-warning {
@@ -4103,17 +4103,17 @@ Created using IcoMoon - icomoon.io
 
 .sidebar[data-color="red"]:after,
 .off-canvas-sidebar[data-color="red"]:after {
-  background: #FF3636;
+  background: #f44133;
 }
 
 .sidebar[data-color="red"] .nav li.active>a,
 .off-canvas-sidebar[data-color="red"] .nav li.active>a {
-  color: #FF3636;
+  color: #f44133;
 }
 
 .sidebar[data-color="red"] .nav li.active>a i,
 .off-canvas-sidebar[data-color="red"] .nav li.active>a i {
-  color: #FF3636;
+  color: #f44133;
 }
 
 .sidebar[data-color="yellow"]:after,
@@ -4375,7 +4375,7 @@ Created using IcoMoon - icomoon.io
 }
 
 .fixed-plugin .badge-red {
-  background-color: #FF3636;
+  background-color: #f44133;
 }
 
 .fixed-plugin h5 {
@@ -4627,7 +4627,7 @@ Created using IcoMoon - icomoon.io
 }
 
 .card[data-background-color="red"] {
-  background-color: #FF3636;
+  background-color: #f44133;
 }
 
 .card[data-background-color="yellow"] {

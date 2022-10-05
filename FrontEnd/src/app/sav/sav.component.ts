@@ -13,7 +13,7 @@ import { Options } from 'selenium-webdriver';
 // class pour les requettes GET et POST.
 export class ApiStat {
 
-  baseurl = "http://127.0.0.1:8000";
+  baseurl = "http://127.0.0.1:7000";
 
   constructor(private http: HttpClient) {
 
@@ -39,15 +39,25 @@ export class ApiStat {
     header.append('Content-Type', 'multipart/form-data');
     return this.http.post(this.baseurl + '/sav-credit/', formData, { headers: header })
   }
-  sendPhrase(File1: any): Observable<any> {
+  sendSumDebit(File1: any): Observable<any> {
 
     let formData = new FormData();
     formData.append('file1', File1, File.name);
     console.log(formData)
 
     var header = new HttpHeaders();
-    header.append('Content-Type', 'application/json');
-    return this.http.post(this.baseurl + '/sav-phrase/', formData, { headers: header, responseType: 'text' })
+    header.append('Content-Type', 'multipart/form-data');
+    return this.http.post(this.baseurl + '/sav-sum-debit/', formData, { headers: header })
+  }
+  sendSumCredit(File1: any): Observable<any> {
+
+    let formData = new FormData();
+    formData.append('file1', File1, File.name);
+    console.log(formData)
+
+    var header = new HttpHeaders();
+    header.append('Content-Type', 'multipart/form-data');
+    return this.http.post(this.baseurl + '/sav-sum-credit/', formData, { headers: header })
   }
 
 }
@@ -68,7 +78,12 @@ export interface StatData {
   providers: [ApiStat]
 })
 export class SAVComponent {
+
   @ViewChild('TABLE') table: ElementRef;
+  @ViewChild('TABLE2') table2: ElementRef;
+
+  @ViewChild('MatPaginator') paginator: MatPaginator;
+  @ViewChild('MatPaginator2') paginator2: MatPaginator;
 
   day = new Date().getDate()
   moiss = new Date().getMonth() + 1
@@ -77,47 +92,33 @@ export class SAVComponent {
 
   selection: string;
   selections: string;
-  /*
-  pickerVeille:Date;
-  pickerJour:Date;
-
-  veille = new FormControl('');
-  jour = new FormControl('');*/
 
   dataFrame: any;
+  dataFrame2: any;
 
   displayedColumns: string[] = ['Transaction', 'Commande', 'Mode', 'Montant', 'Commentaires'];
-  dataSource: MatTableDataSource<StatData>;
+  displayedColumns2: string[] = ['Mode', 'Montant'];
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  dataSource: MatTableDataSource<StatData>;
+  dataSource2: MatTableDataSource<StatData>;
 
   element: any;
   df1: any;
-  df2: any;
-  df3: any;
+
   annee: string;
 
-  phrase: string = "";
-  value: number;
+  value: number = 10;
+  value2: number = 10;
 
   constructor(private DATACLEANING: ApiStat) {
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource([]);
+    this.dataSource2 = new MatTableDataSource([]);
   }
 
   // function executed when file is changed
   fileChangeListener1($event: any): void {
     this.df1 = $event.target.files[0]
-  }
-
-  // function executed when file is changed
-  fileChangeListener2($event: any): void {
-    this.df2 = $event.target.files[0]
-  }
-
-  // function executed when file is changed
-  fileChangeListener3($event: any): void {
-    this.df3 = $event.target.files[0]
   }
 
   deleteData() {
@@ -154,6 +155,7 @@ export class SAVComponent {
           data => {
             this.value = 10
             this.dataFrame = data;
+            console.log(this.dataFrame)
             // to choose witch data gonna be showing in the table
             this.InitializeVisualization();
             // puts data into the datasource table
@@ -171,25 +173,57 @@ export class SAVComponent {
     }
   }
 
-  createPhrase = () => {
+  // function executed when user click on Reporting button
+  createSum = () => {
 
-    if (this.df1 != null && this.df2 != null && this.df3 != null) {
-      this.value = 0
-      this.DATACLEANING.sendPhrase(this.df1).subscribe(
-        data => {
-          this.value = 10
-          this.phrase = data;
-          console.log(this.phrase)
-        },
-        error => {
-          console.log("error ", error);
-        }
-      );
+    if (this.df1 != null) {
+      if (this.selections == "debit") {
+        this.value = 0
+        this.DATACLEANING.sendSumDebit(this.df1).subscribe(
+          data => {
+            this.value = 10
+            this.dataFrame2 = data;
+            console.log(this.dataFrame2)
+            // to choose witch data gonna be showing in the table
+            this.InitializeVisualization();
+            // puts data into the datasource table
+            this.dataSource2 = new MatTableDataSource(data);
+            // execute the visualisation function
+            this.executeVisualisation();
+            // add paginator to the data
+            this.dataSource2.paginator = this.paginator2;
+          },
+          error => {
+            console.log("error ", error);
+          }
+        );
+      }
+      if (this.selections == "credit") {
+        this.value = 0
+        this.DATACLEANING.sendSumCredit(this.df1).subscribe(
+          data => {
+            this.value = 10
+            this.dataFrame2 = data;
+            console.log(this.dataFrame2)
+            // to choose witch data gonna be showing in the table
+            this.InitializeVisualization();
+            // puts data into the datasource table
+            this.dataSource2 = new MatTableDataSource(data);
+            // execute the visualisation function
+            this.executeVisualisation();
+            // add paginator to the data
+            this.dataSource2.paginator = this.paginator2;
+          },
+          error => {
+            console.log("error ", error);
+          }
+        );
+      }
     }
   }
 
-  deletePhrase() {
-    this.phrase = ''
+  deleteSum() {
+    this.dataSource2 = new MatTableDataSource([]);
   }
   //observable for the checkBox execute every time the checkBox is changed
   executeVisualisation() {
@@ -243,9 +277,20 @@ export class SAVComponent {
     { def: 'Commentaires', label: 'Commentaires', show: this.Commentaires.value },
   ]
 
+  //Control column ordering and which columns are displayed.
+  columnDefinitions2 = [
+    { def: 'Mode', label: 'Mode', show: this.Mode.value },
+    { def: 'Montant', label: 'Montant', show: this.Montant.value },
+  ]
+
   // Filter data in witch columns is checked
   getDisplayedColumns(): string[] {
     return this.columnDefinitions.filter(cd => cd.show).map(cd => cd.def);
+  }
+
+  // Filter data in witch columns is checked
+  getDisplayedColumns2(): string[] {
+    return this.columnDefinitions2.filter(cd => cd.show).map(cd => cd.def);
   }
 
 }

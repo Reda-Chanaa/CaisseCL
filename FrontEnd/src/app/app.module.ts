@@ -73,7 +73,7 @@ export const MY_FORMAT: MatDateFormats = {
   ],
   declarations: [
     AppComponent,
-    AdminLayoutComponent,
+    AdminLayoutComponent
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'fr-FR' },
   { provide: MAT_DATE_FORMATS, useValue: MY_FORMAT }],

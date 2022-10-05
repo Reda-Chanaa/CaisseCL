@@ -1,1 +1,164 @@
-<p>cvd works!</p>
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">CVD</h4>
+                </div>
+                <div class="card-body">
+                    <br />
+                    <form class="ng-untouched ng-pristine ng-invalid" #myForm="ngForm" ngNativeValidate>
+                        <div>
+                            <label for="file"> <b>Fichier CVD Seaware :</b></label>
+                            <input type="file" #fileInput name="File Upload" id="csvFile1"
+                                (change)="fileChangeListener1($event)" accept=".xls" />
+                            <br />
+                            <label for="file"><b>Fichier CVD de CEPAC Remisé :</b></label>
+                            <input type="file" #fileInput name="File Upload" id="csvFile2"
+                                (change)="fileChangeListener2($event)" accept=".xls" />
+                        </div>
+
+                        <br />
+                        <label>Choisissez votre type de transaction :</label>
+                        <br />
+                        <div>
+                            <mat-radio-group aria-label="Selectionner une option" [(ngModel)]="selections"
+                                name="selections">
+                                <mat-radio-button value='credit' name="credit">Remboursement &nbsp;&nbsp;&nbsp;
+                                </mat-radio-button>
+                                <mat-radio-button value='debit' name="debit">Payement &nbsp;&nbsp;&nbsp;
+                                </mat-radio-button>&nbsp;&nbsp;&nbsp;
+                            </mat-radio-group>
+                        </div>
+                        <br />
+                        <br />
+
+                        <br />
+                        <br />
+                        <button (click)="deleteData()" [hidden]="dataSource.data.length === 0"
+                            style="background-color: rgb(256,54,54);" class="btn pull-right">
+                            <b>Supprimer le tableau</b>
+                        </button>
+
+                        <button (click)="deleteSum()" [hidden]="dataSource2.data.length === 0"
+                            style="background-color: rgb(256,54,54);" class="btn pull-right">
+                            <b>Supprimer les sommes</b>
+                        </button>
+
+                        &nbsp;&nbsp;&nbsp;
+                        <button (click)="createFile()" [hidden]="dataSource.data.length !== 0"
+                            style="background-color: rgb(256,54,54);" class="btn pull-right">
+                            <b>Générer le tableau</b>
+                        </button>
+
+                        &nbsp;&nbsp;&nbsp;
+                        <button (click)="createSum()" [hidden]="dataSource2.data.length !== 0"
+                            style="background-color: rgb(256,54,54);" class="btn pull-right">
+                            <b>Générer les sommes</b>
+                        </button>
+                        <br />
+                    </form>
+                    <br />
+                    <br />
+                    <mat-spinner style="stroke: rgb(256,54,54);" strokeWidth="3" [diameter]="100"
+                        *ngIf="dataSource.data.length === 0 && value === 0 ">
+                    </mat-spinner>
+                    <div #TABLE class="table-responsive" [hidden]="dataSource.data.length === 0">
+
+                        <!--Table-->
+
+                        <table id="reporting" mat-table bordered="true" class="mat-elevation-z8 table-hover table"
+                            [dataSource]="dataSource">
+
+                            <ng-container matColumnDef="Transaction">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Transaction
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.Transaction }} </b>
+                                </td>
+
+                            </ng-container>
+
+                            <ng-container matColumnDef="Commande">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Dossier
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.Commande }} </b>
+                                </td>
+
+                            </ng-container>
+
+                            <ng-container matColumnDef="Mode">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Mode pmt
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.Mode }} </b>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Montant">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Montant init.
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.Montant }} </b>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Commentaires">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Commentaires
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.Commentaires }} </b>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+                            <tr mat-row *matRowDef="let row; columns: getDisplayedColumns()"></tr>
+                        </table>
+                        <mat-paginator #MatPaginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+                    </div>
+                    <mat-spinner style="stroke: rgb(256,54,54);" strokeWidth="3" [diameter]="100"
+                        *ngIf="dataSource2.data.length === 0 && value2 === 0">
+                    </mat-spinner>
+                    <div #TABLE2 class="table-responsive" [hidden]="dataSource2.data.length === 0">
+
+                        <!--Table-->
+
+                        <table id="reporting" mat-table bordered="true" class="mat-elevation-z8 table-hover table"
+                            [dataSource]="dataSource2">
+
+                            <ng-container matColumnDef="Mode">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Mode pmt
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.Mode }} </b>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Montant">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Montant init.
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.Montant }} </b>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="getDisplayedColumns2()"></tr>
+                            <tr mat-row *matRowDef="let row; columns: getDisplayedColumns2()"></tr>
+                        </table>
+                        <mat-paginator #MatPaginator2 [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

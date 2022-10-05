@@ -49,7 +49,7 @@ INSTALLED_APPS = [
 CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ORIGIN_WHITELIST = [
-    "http://localhost:4200",
+    "http://localhost:4224",
 ]
 
 MIDDLEWARE = [
@@ -98,7 +98,7 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': 'http://127.0.0.1:8000/',
+        'LOCATION': 'http://127.0.0.1:7000/',
     }
 }
 DEFAULT_AUTHENTICATION_CLASSES = (

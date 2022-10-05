@@ -21,15 +21,15 @@
                         <div>
                             <mat-radio-group aria-label="Selectionner une option" [(ngModel)]="selections"
                                 name="selections">
-                                <mat-radio-button value='credit' name="credit">Crédit &nbsp;&nbsp;&nbsp;
+                                <mat-radio-button value='credit' name="credit">Remboursement &nbsp;&nbsp;&nbsp;
                                 </mat-radio-button>
-                                <mat-radio-button value='debit' name="debit">Débit &nbsp;&nbsp;&nbsp;
+                                <mat-radio-button value='debit' name="debit">Payement &nbsp;&nbsp;&nbsp;
                                 </mat-radio-button>&nbsp;&nbsp;&nbsp;
                             </mat-radio-group>
                         </div>
                         <br />
                         <br />
-                        <label [hidden]="phrase === ''"> <b>{{phrase}}</b></label>
+
                         <br />
                         <br />
                         <button (click)="deleteData()" [hidden]="dataSource.data.length === 0"
@@ -37,7 +37,7 @@
                             <b>Supprimer le tableau</b>
                         </button>
 
-                        <button (click)="deletePhrase()" [hidden]="phrase ===''"
+                        <button (click)="deleteSum()" [hidden]="dataSource2.data.length === 0"
                             style="background-color: rgb(256,54,54);" class="btn pull-right">
                             <b>Supprimer les sommes</b>
                         </button>
@@ -49,23 +49,23 @@
                         </button>
 
                         &nbsp;&nbsp;&nbsp;
-                        <button (click)="createPhrase()" [hidden]="phrase !==''"
+                        <button (click)="createSum()" [hidden]="dataSource2.data.length !== 0"
                             style="background-color: rgb(256,54,54);" class="btn pull-right">
                             <b>Générer les sommes</b>
                         </button>
-                    <br />
+                        <br />
                     </form>
                     <br />
                     <br />
                     <mat-spinner style="stroke: rgb(256,54,54);" strokeWidth="3" [diameter]="100"
-                        *ngIf="dataSource.data.length === 0 && value === 0  && phrase === ''">
+                        *ngIf="dataSource.data.length === 0 && value === 0 ">
                     </mat-spinner>
                     <div #TABLE class="table-responsive" [hidden]="dataSource.data.length === 0">
 
                         <!--Table-->
 
-                        <table id="reporting" mat-table bordered="true" matTableExporter #exporter="matTableExporter"
-                            class="mat-elevation-z8 table-hover table" [dataSource]="dataSource">
+                        <table id="reporting" mat-table bordered="true" class="mat-elevation-z8 table-hover table"
+                            [dataSource]="dataSource">
 
                             <ng-container matColumnDef="Transaction">
                                 <th mat-header-cell *matHeaderCellDef>
@@ -117,13 +117,40 @@
                             <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
                             <tr mat-row *matRowDef="let row; columns: getDisplayedColumns()"></tr>
                         </table>
-                        <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
-                        <div class="export-container">
-                            <button style="background-color: rgb(256,54,54);" class="btn pull-right" mat-raised-button
-                                (click)="exporter.exportTable('xlsx', {fileName:date , sheet: 'caisses', Props: {Author: 'Reda CHANAA'}})">Exporter
-                                en Excel</button>
+                        <mat-paginator #MatPaginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+                    </div>
+                    <mat-spinner style="stroke: rgb(256,54,54);" strokeWidth="3" [diameter]="100"
+                        *ngIf="dataSource2.data.length === 0 && value2 === 0">
+                    </mat-spinner>
+                    <div #TABLE2 class="table-responsive" [hidden]="dataSource2.data.length === 0">
 
-                        </div>
+                        <!--Table-->
+
+                        <table id="reporting" mat-table bordered="true" class="mat-elevation-z8 table-hover table"
+                            [dataSource]="dataSource2">
+
+                            <ng-container matColumnDef="Mode">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Mode pmt
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.Mode }} </b>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="Montant">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    Montant init.
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.Montant }} </b>
+                                </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="getDisplayedColumns2()"></tr>
+                            <tr mat-row *matRowDef="let row; columns: getDisplayedColumns2()"></tr>
+                        </table>
+                        <mat-paginator #MatPaginator2 [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
                     </div>
                 </div>
             </div>

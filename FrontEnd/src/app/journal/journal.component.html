@@ -5,38 +5,40 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Ecart Caisse Internet</h4>
+                    <h4 class="card-title">Journal 39 Internet - ADV - SAV</h4>
                 </div>
                 <div class="card-body">
                     <br />
                     <form class="ng-untouched ng-pristine ng-invalid" #myForm="ngForm" ngNativeValidate>
                         <div>
-                            <label for="file"> <b>Fichier de Seaware :</b></label>
+                            <label for="file"><b>Fichier Internet :</b></label>
                             <input type="file" #fileInput name="File Upload" id="csvFile1"
                                 (change)="fileChangeListener1($event)" accept=".xls" />
                             <br />
-                            <label for="file"><b>Fichier de CEPAC Remisé :</b></label>
+                            <label for="file"><b>Fichier ADV :</b></label>
                             <input type="file" #fileInput name="File Upload" id="csvFile2"
                                 (change)="fileChangeListener2($event)" accept=".xls" />
                             <br />
-                            <label for="file"><b>Fichier de CEPAC En attente :</b></label>
-                            <input type="file" #fileInput name="File Upload" id="csvFile2"
+                            <label for="file"><b>Fichier SAV :</b></label>
+                            <input type="file" #fileInput name="File Upload" id="csvFile3"
                                 (change)="fileChangeListener3($event)" accept=".xls" />
+                            <br />
+                            <label for="file"><b>Fichier CVD :</b></label>
+                            <input type="file" #fileInput name="File Upload" id="csvFile4"
+                                (change)="fileChangeListener4($event)" accept=".xls" />
+                            <br />
+                            <label for="file"><b>Fichier de CEPAC Remisé :</b></label>
+                            <input type="file" #fileInput name="File Upload" id="csvFile5"
+                                (change)="fileChangeListener5($event)" accept=".xls" />
+                            <br />
+                            <label for="file"><b>Fichier de CEPAC en attente :</b></label>
+                            <input type="file" #fileInput name="File Upload" id="csvFile6"
+                                (change)="fileChangeListener6($event)" accept=".xls" />
+                            <br />
+                            <label for="file"><b>Fichier de la Marie Do:</b></label>
+                            <input type="file" #fileInput name="File Upload" id="csvFile7"
+                                (change)="fileChangeListener7($event)" accept=".xls" />
 
-                        </div>
-                        <br />
-                        <label>Choisissez votre type de paiement :</label>
-                        <br />
-                        <div>
-                            <mat-radio-group aria-label="Selectionner une option" [(ngModel)]="selection"
-                                name="selection">
-                                <mat-radio-button value='amex' name="amex">AMEX &nbsp;&nbsp;&nbsp;
-                                </mat-radio-button>
-                                <mat-radio-button value='paypal' name="paypal">PayPal &nbsp;&nbsp;&nbsp;
-                                </mat-radio-button>
-                                <mat-radio-button value='cc' name="cc"> CC &nbsp;&nbsp;&nbsp;
-                                </mat-radio-button>&nbsp;&nbsp;&nbsp;
-                            </mat-radio-group>
                         </div>
                         <br />
                         <label>Choisissez votre type de transaction :</label>
@@ -44,40 +46,37 @@
                         <div>
                             <mat-radio-group aria-label="Selectionner une option" [(ngModel)]="selections"
                                 name="selections">
-                                <mat-radio-button value='credit' name="credit">Remboursement &nbsp;&nbsp;&nbsp;
+                                <mat-radio-button value='credit' name="credit">Crédit &nbsp;&nbsp;&nbsp;
                                 </mat-radio-button>
-                                <mat-radio-button value='debit' name="debit">Payement &nbsp;&nbsp;&nbsp;
+                                <mat-radio-button value='debit' name="debit">Débit &nbsp;&nbsp;&nbsp;
+                                </mat-radio-button>&nbsp;&nbsp;&nbsp;
+                            </mat-radio-group>
+                        </div>
+                        <br />
+                        <label>Fichier remisé == Fichier en attente (ancienne caisse) :</label>
+                        <br />
+                        <div>
+                            <mat-radio-group aria-label="Selectionner une option" [(ngModel)]="selectionss"
+                                name="selectionss">
+                                <mat-radio-button value='oui' name="oui">Oui &nbsp;&nbsp;&nbsp;
+                                </mat-radio-button>
+                                <mat-radio-button value='non' name="non">Non &nbsp;&nbsp;&nbsp;
                                 </mat-radio-button>&nbsp;&nbsp;&nbsp;
                             </mat-radio-group>
                         </div>
                         <br />
                         <br />
-                        <label [hidden]="phrase === ''"> <b>{{phrase}}</b></label>
-                        <br />
-                        <br />
+
                         <button (click)="deleteData()" [hidden]="dataSource.data.length === 0"
                             style="background-color: rgb(256,54,54);" class="btn pull-right">
                             <b>Supprimer le tableau</b>
                         </button>
 
-                        <button (click)="deletePhrase()" [hidden]="phrase ===''"
-                            style="background-color: rgb(256,54,54);" class="btn pull-right">
-                            <b>Supprimer la phrase</b>
-                        </button>
-
                         &nbsp;&nbsp;&nbsp;
                         <button (click)="createFile()" [hidden]="dataSource.data.length !== 0"
                             style="background-color: rgb(256,54,54);" class="btn pull-right">
-                            <b>Calculer l'écart</b>
+                            <b>Générer le journal</b>
                         </button>
-
-                        &nbsp;&nbsp;&nbsp;
-                        <button (click)="createPhrase()" [hidden]="phrase !==''"
-                            style="background-color: rgb(256,54,54);" class="btn pull-right">
-                            <b>Générer la phrase</b>
-                        </button>
-
-                        
 
                         <!--
                         &nbsp;&nbsp;&nbsp;
@@ -87,7 +86,7 @@
                     <br />
                     <br />
                     <mat-spinner style="stroke: rgb(256,54,54);" strokeWidth="3" [diameter]="100"
-                        *ngIf="dataSource.data.length === 0 && value === 0  && phrase === ''">
+                        *ngIf="dataSource.data.length === 0 && value === 0">
                     </mat-spinner>
                     <div #TABLE class="table-responsive" [hidden]="dataSource.data.length === 0">
 
@@ -96,61 +95,64 @@
                         <table id="reporting" mat-table bordered="true" matTableExporter #exporter="matTableExporter"
                             class="mat-elevation-z8 table-hover table" [dataSource]="dataSource">
 
-                            <ng-container matColumnDef="Transaction">
+                            <ng-container matColumnDef="Comptes">
                                 <th mat-header-cell *matHeaderCellDef>
-                                    Transaction
+                                    Comptes
                                 </th>
                                 <td mat-cell *matCellDef="let element">
-                                    <b> {{ element.Transaction }} </b>
+                                    <b> {{ element.Comptes }} </b>
                                 </td>
 
                             </ng-container>
 
-                            <ng-container matColumnDef="Commande">
+                            <ng-container matColumnDef="Gestions">
                                 <th mat-header-cell *matHeaderCellDef>
-                                    Dossier
+                                    Gestions
                                 </th>
                                 <td mat-cell *matCellDef="let element">
-                                    <b> {{ element.Commande }} </b>
+                                    <b> {{ element.Gestions }} </b>
                                 </td>
 
                             </ng-container>
 
-                            <ng-container matColumnDef="MontantSeaware">
+                            <ng-container matColumnDef="Libelles">
                                 <th mat-header-cell *matHeaderCellDef>
-                                    Montant Seaware
+                                    Libellés
                                 </th>
                                 <td mat-cell *matCellDef="let element">
-                                    <b> {{ element.MontantSeaware }} </b>
+                                    <b> {{ element.Libelles }} </b>
                                 </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="MontantCepac">
+                            <ng-container matColumnDef="NB">
                                 <th mat-header-cell *matHeaderCellDef>
-                                    Montant Cepac
+                                    NB
                                 </th>
                                 <td mat-cell *matCellDef="let element">
-                                    <b> {{ element.MontantCepac }} </b>
+                                    <b> {{ element.NB }} </b>
                                 </td>
                             </ng-container>
 
-                            <ng-container matColumnDef="Ecart">
+                            <ng-container matColumnDef="Montants">
                                 <th mat-header-cell *matHeaderCellDef>
-                                    Ecart
+                                    Montants
                                 </th>
                                 <td mat-cell *matCellDef="let element">
-                                    <b> {{ element.Ecart }} </b>
+                                    <b> {{ element.Montants }} </b>
                                 </td>
                             </ng-container>
 
                             <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
                             <tr mat-row *matRowDef="let row; columns: getDisplayedColumns()"></tr>
                         </table>
-                        <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+                        <mat-paginator [pageSizeOptions]="[35, 50, 100]"></mat-paginator>
                         <div class="export-container">
                             <button style="background-color: rgb(256,54,54);" class="btn pull-right" mat-raised-button
                                 (click)="exporter.exportTable('xlsx', {fileName:date , sheet: 'caisses', Props: {Author: 'Reda CHANAA'}})">Exporter
                                 en Excel</button>
+                            <button style="background-color: rgb(256,54,54);" class="btn pull-right" mat-raised-button
+                                (click)="printTable()">Imprimer</button>
+                                
 
                         </div>
                         <!--

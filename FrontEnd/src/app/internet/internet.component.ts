@@ -12,7 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 // class pour les requettes GET et POST.
 export class ApiStat {
 
-  baseurl = "http://127.0.0.1:8000";
+  baseurl = "http://127.0.0.1:7000";
 
   constructor(private http: HttpClient) {
 

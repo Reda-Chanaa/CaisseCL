@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from datetime import datetime
 
 
-def Sav_debit(df1):
+def Cvd_debit(df1):
 
     df_seaware = df1[(df1["Type Trans."] == "PMNT")
                      & (df1["Mode pmt"] != "TERMS") &
@@ -22,7 +22,7 @@ def Sav_debit(df1):
     return df_seaware
 
 
-def SavDebit(request):
+def CvdDebit(request):
     if request.method == 'POST':
         File1 = request.FILES["file1"]
 
@@ -30,13 +30,13 @@ def SavDebit(request):
 
         print("df1", df1)
         # Stats
-        data = Sav_debit(df1)
+        data = Cvd_debit(df1)
         print('data : ', data)
 
     return HttpResponse(data.to_json(orient='records'))
 
 
-def Sav_Credit(df1):
+def Cvd_Credit(df1):
 
     df_seaware = df1[(df1["Type Trans."] == "REFUND") |
                      (df1["Type Trans."] == "MANREFUND")]
@@ -50,7 +50,7 @@ def Sav_Credit(df1):
     return df_seaware
 
 
-def SavCredit(request):
+def CvdCredit(request):
     if request.method == 'POST':
         File1 = request.FILES["file1"]
 
@@ -58,13 +58,13 @@ def SavCredit(request):
 
         print("df1", df1)
         # Stats
-        data = Sav_Credit(df1)
+        data = Cvd_Credit(df1)
         print('data : ', data)
 
     return HttpResponse(data.to_json(orient='records'))
 
 
-def Sav_Somme_Debit(df1):
+def Cvd_Somme_Debit(df1):
 
     df_seaware = df1[(df1["Type Trans."] == "PMNT")
                      & (df1["Mode pmt"] != "TERMS") &
@@ -82,7 +82,7 @@ def Sav_Somme_Debit(df1):
     return df_sum
 
 
-def SavSumDebit(request):
+def CvdSumDebit(request):
     if request.method == 'POST':
         File1 = request.FILES["file1"]
         #annee = request.POST["annee"]
@@ -91,14 +91,14 @@ def SavSumDebit(request):
 
         print("df1", df1)
         # Stats
-        data = Sav_Somme_Debit(df1)
+        data = Cvd_Somme_Debit(df1)
 
         print('data : ', data)
 
     return HttpResponse(data.to_json(orient='records'))
 
 
-def Sav_Somme_Credit(df1):
+def Cvd_Somme_Credit(df1):
 
     df_seaware = df1[(df1["Type Trans."] == "REFUND") |
                      (df1["Type Trans."] == "MANREFUND")]
@@ -115,7 +115,7 @@ def Sav_Somme_Credit(df1):
     return df_sum
 
 
-def SavSumCredit(request):
+def CvdSumCredit(request):
     if request.method == 'POST':
         File1 = request.FILES["file1"]
         #annee = request.POST["annee"]
@@ -124,7 +124,7 @@ def SavSumCredit(request):
 
         print("df1", df1)
         # Stats
-        data = Sav_Somme_Credit(df1)
+        data = Cvd_Somme_Credit(df1)
 
         print('data : ', data)
 

@@ -1,4 +1,4 @@
-# A "Responsive" Web Application for Client service
+# A "Responsive" Web Application for Client service and sales administration
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0 and angular 4.x.
 
@@ -35,7 +35,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 8. Run ```pip install -r requirements.txt``` to install all the modules that you gonna need on your Mac.
 9. Run ```pip install -r requirements_win.txt``` to install all the modules that you gonna need on your windows.
 10. When its Ok, Run ```python manage.py runserver``` to run the server of the BackEnd.
-11. Back to the FrontEnd, Run `ng serve --open` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+11. Back to the FrontEnd, Run `ng serve --open` for a dev server. Navigate to `http://localhost:4224/`. The app will automatically reload if you change any of the source files.
 
 12. if you add a package in backend, please run ```pip freeze > requirements.txt``` to add automatically the module name and his version (You can check the file in BackEnd folder). 
 
@@ -97,8 +97,8 @@ Now Ui Dashboard
 │   │   ├── fonts
 │   │   ├── img
 │   │   └── scss
-│   │       ├── now-ui-dashboard
-│   │       └── now-ui-dashboard.scss
+│   │       ├── caisse-verif
+│   │       └── caisse-verif.scss
 │   ├── environments
 │   ├── favicon.ico
 │   ├── index.html
