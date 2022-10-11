@@ -68,24 +68,24 @@
                         <br />
 
                         <button (click)="deleteData()" [hidden]="dataSource.data.length === 0"
-                            style="background-color: rgb(256,54,54);" class="btn pull-right">
+                            style="background-color: #f44133;" class="btn pull-right">
                             <b>Supprimer le tableau</b>
                         </button>
 
                         &nbsp;&nbsp;&nbsp;
                         <button (click)="createFile()" [hidden]="dataSource.data.length !== 0"
-                            style="background-color: rgb(256,54,54);" class="btn pull-right">
+                            style="background-color: #f44133;" class="btn pull-right">
                             <b>Générer le journal</b>
                         </button>
 
                         <!--
                         &nbsp;&nbsp;&nbsp;
-                        <button [hidden]="dataSource.data.length === 0" class="btn pull-right" style="background-color: rgb(256,54,54);" (click)="addColumn()"> <b>Ajouter une colonne</b> </button>
+                        <button [hidden]="dataSource.data.length === 0" class="btn pull-right" style="background-color: #f44133;" (click)="addColumn()"> <b>Ajouter une colonne</b> </button>
                         --><br />
                     </form>
                     <br />
                     <br />
-                    <mat-spinner style="stroke: rgb(256,54,54);" strokeWidth="3" [diameter]="100"
+                    <mat-spinner style="stroke: #f44133;" strokeWidth="3" [diameter]="100"
                         *ngIf="dataSource.data.length === 0 && value === 0">
                     </mat-spinner>
                     <div #TABLE class="table-responsive" [hidden]="dataSource.data.length === 0">
@@ -147,16 +147,16 @@
                         </table>
                         <mat-paginator [pageSizeOptions]="[35, 50, 100]"></mat-paginator>
                         <div class="export-container">
-                            <button style="background-color: rgb(256,54,54);" class="btn pull-right" mat-raised-button
+                            <button style="background-color: #f44133;" class="btn pull-right" mat-raised-button
                                 (click)="exporter.exportTable('xlsx', {fileName:date , sheet: 'caisses', Props: {Author: 'Reda CHANAA'}})">Exporter
                                 en Excel</button>
-                            <button style="background-color: rgb(256,54,54);" class="btn pull-right" mat-raised-button
+                            <button style="background-color: #f44133;" class="btn pull-right" mat-raised-button
                                 (click)="printTable()">Imprimer</button>
                                 
 
                         </div>
                         <!--
-                        <button style="background-color: rgb(256,54,54);" mat-raised-button
+                        <button style="background-color: #f44133;" mat-raised-button
                             (click)="exporter.exportTable('csv', {fileName:'Reporting',delimiter:';'})" class="btn pull-right">
                             Exporter en Excel
                         </button>-->

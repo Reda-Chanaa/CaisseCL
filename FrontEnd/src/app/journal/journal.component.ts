@@ -5,6 +5,7 @@ import { merge, Observable } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ import { MatTableDataSource } from '@angular/material/table';
 // class pour les requettes GET et POST.
 export class ApiStat {
 
-  baseurl = "http://127.0.0.1:7000";
+  baseurl = environment.BASE_URL;
 
   constructor(private http: HttpClient) {
 

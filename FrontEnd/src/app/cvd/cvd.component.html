@@ -38,31 +38,31 @@
                         <br />
                         <br />
                         <button (click)="deleteData()" [hidden]="dataSource.data.length === 0"
-                            style="background-color: rgb(256,54,54);" class="btn pull-right">
+                            style="background-color: #f44133;" class="btn pull-right">
                             <b>Supprimer le tableau</b>
                         </button>
 
                         <button (click)="deleteSum()" [hidden]="dataSource2.data.length === 0"
-                            style="background-color: rgb(256,54,54);" class="btn pull-right">
+                            style="background-color: #f44133;" class="btn pull-right">
                             <b>Supprimer les sommes</b>
                         </button>
 
                         &nbsp;&nbsp;&nbsp;
                         <button (click)="createFile()" [hidden]="dataSource.data.length !== 0"
-                            style="background-color: rgb(256,54,54);" class="btn pull-right">
+                            style="background-color: #f44133;" class="btn pull-right">
                             <b>Générer le tableau</b>
                         </button>
 
                         &nbsp;&nbsp;&nbsp;
                         <button (click)="createSum()" [hidden]="dataSource2.data.length !== 0"
-                            style="background-color: rgb(256,54,54);" class="btn pull-right">
+                            style="background-color: #f44133;" class="btn pull-right">
                             <b>Générer les sommes</b>
                         </button>
                         <br />
                     </form>
                     <br />
                     <br />
-                    <mat-spinner style="stroke: rgb(256,54,54);" strokeWidth="3" [diameter]="100"
+                    <mat-spinner style="stroke: #f44133;" strokeWidth="3" [diameter]="100"
                         *ngIf="dataSource.data.length === 0 && value === 0 ">
                     </mat-spinner>
                     <div #TABLE class="table-responsive" [hidden]="dataSource.data.length === 0">
@@ -124,7 +124,7 @@
                         </table>
                         <mat-paginator #MatPaginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
                     </div>
-                    <mat-spinner style="stroke: rgb(256,54,54);" strokeWidth="3" [diameter]="100"
+                    <mat-spinner style="stroke: #f44133;" strokeWidth="3" [diameter]="100"
                         *ngIf="dataSource2.data.length === 0 && value2 === 0">
                     </mat-spinner>
                     <div #TABLE2 class="table-responsive" [hidden]="dataSource2.data.length === 0">
