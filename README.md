@@ -1,22 +1,23 @@
 # A "Responsive" Web Application for Client service and sales administration
 
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0 and angular 4.x.
 
 ## Code scaffolding
 
-Run in FrontEnd Folder `ng generate component component-name` to generate a new component or `ng g c component-name`. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run in FrontEnd Folder (stats) `ng generate component component-name` to generate a new component or `ng g c component-name`. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 
-Run in FrontEnd Folder `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Run in FrontEnd Folder (stats) `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
 ## Running unit tests
 
-Run in FrontEnd Folder `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run in FrontEnd Folder (stats) `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
 ## Running end-to-end tests
 
-Run in FrontEnd Folder `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Run in FrontEnd Folder (stats) `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
 ## Further help
 
@@ -32,12 +33,10 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 5. Run in FrontEnd terminal: ```npm install```.
 6. For windows, Run in terminal of the BackEnd Folder : ``` py -m pip install --user virtualenv``` for installing a virtual envirenement, then ```py -m venv venv``` to create a venv folder then run ```./venv/scripts/activate``` to activate it,
 7. For Mac, Run in terminal of the BackEnd Folder : ``` python3 -m pip install --user``` for installing a virtual envirenement, then ```python3 -m venv venv``` to create a venv folder then run ``` source venv/bin/activate``` to activate virtual envirenement.
-8. Run ```pip install -r requirements.txt``` to install all the modules that you gonna need on your Mac.
-9. Run ```pip install -r requirements_win.txt``` to install all the modules that you gonna need on your windows.
-10. When its Ok, Run ```python manage.py runserver``` to run the server of the BackEnd.
-11. Back to the FrontEnd, Run `ng serve --open` for a dev server. Navigate to `http://localhost:4224/`. The app will automatically reload if you change any of the source files.
-
-12. if you add a package in backend, please run ```pip freeze > requirements.txt``` to add automatically the module name and his version (You can check the file in BackEnd folder). 
+8. Run ```pip install -r requirements_dev.txt``` to install all the modules that you gonna need on your windows.
+9. When its Ok, Run ```python manage.py runserver``` to run the server of the BackEnd.
+10. Back to the FrontEnd, Run `ng serve --open` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+11. if you add a package in backend, please run ```pip freeze > requirements.txt``` to add automatically the module name and his version (You can check the file in BackEnd folder). 
 
 ### What's included
 
@@ -87,11 +86,31 @@ Now Ui Dashboard
 │   │   │       ├── admin-layout.component.ts
 │   │   │       ├── admin-layout.module.ts
 │   │   │       └── admin-layout.routing.ts
-│   │   ├── table-list
-│   │   │   ├── table-list.component.css
-│   │   │   ├── table-list.component.html
-│   │   │   ├── table-list.component.spec.ts
-│   │   │   └── table-list.component.ts
+│   │   ├── adv
+│   │   │   ├── adv.component.css
+│   │   │   ├── adv.component.html
+│   │   │   ├── adv.component.spec.ts
+│   │   │   └── adv.component.ts
+│   │   ├── cvd
+│   │   │   ├── cvd.component.css
+│   │   │   ├── cvd.component.html
+│   │   │   ├── cvd.component.spec.ts
+│   │   │   └── cvd.component.ts
+│   │   ├── internet
+│   │   │   ├── internet.component.css
+│   │   │   ├── internet.component.html
+│   │   │   ├── internet.component.spec.ts
+│   │   │   └── internet.component.ts
+│   │   ├── journal
+│   │   │   ├── journal.component.css
+│   │   │   ├── journal.component.html
+│   │   │   ├── journal.component.spec.ts
+│   │   │   └── journal.component.ts
+│   │   ├── sav
+│   │   │   ├── sav.component.css
+│   │   │   ├── sav.component.html
+│   │   │   ├── sav.component.spec.ts
+│   │   │   └── sav.component.ts
 │   ├── assets
 │   │   ├── demo
 │   │   ├── fonts
