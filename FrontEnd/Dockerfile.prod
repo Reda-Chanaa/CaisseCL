@@ -10,4 +10,4 @@ RUN npm run build -- --configuration=production
 
 # stage 2
 FROM nginx:alpine
-COPY --from=node /caisse/dist /usr/share/nginx/html
+COPY --from=node /caisse/dist/FrontEnd /usr/share/nginx/html
