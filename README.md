@@ -5,19 +5,19 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Code scaffolding
 
-Run in FrontEnd Folder (stats) `ng generate component component-name` to generate a new component or `ng g c component-name`. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run in FrontEnd Folder `ng generate component component-name` to generate a new component or `ng g c component-name`. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 
-Run in FrontEnd Folder (stats) `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Run in FrontEnd Folder `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
 ## Running unit tests
 
-Run in FrontEnd Folder (stats) `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run in FrontEnd Folder `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
 ## Running end-to-end tests
 
-Run in FrontEnd Folder (stats) `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Run in FrontEnd Folder `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
 
 ## Further help
 
