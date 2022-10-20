@@ -98,7 +98,7 @@ DATABASES = {
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': 'http://127.0.0.1:8000/',
+        'LOCATION': 'http://127.0.0.1:7000/',
     }
 }
 DEFAULT_AUTHENTICATION_CLASSES = (

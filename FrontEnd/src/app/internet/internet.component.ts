@@ -105,7 +105,7 @@ export class ApiStat {
 
     var header = new HttpHeaders();
     header.append('Content-Type', 'application/json');
-    return this.http.post(this.baseurl + '/internet-phrase/', formData, { headers: header,  responseType: 'text' })
+    return this.http.post(this.baseurl + '/internet-phrase/', formData, { headers: header, responseType: 'text' })
   }
 
 }
@@ -132,7 +132,7 @@ export class InternetComponent {
   day = new Date().getDate()
   moiss = new Date().getMonth() + 1
   annees = new Date().getFullYear()
-  date: any
+  date = "ECART_INTERNET"
 
   selection: string;
   selections: string;
@@ -156,7 +156,7 @@ export class InternetComponent {
   df3: any;
   annee: string;
 
-  phrase:string="";
+  phrase: string = "";
   value: number;
 
   constructor(private DATACLEANING: ApiStat) {
@@ -188,32 +188,47 @@ export class InternetComponent {
     if (this.df1 != null && this.df2 != null && this.df3 != null) {
       if (this.selection == "amex") {
         if (this.selections == "debit") {
-        this.value = 0
-        this.DATACLEANING.sendFileAmexDebit(this.df1, this.df2, this.df3).subscribe(
-          data => {
-            this.value = 10
-            this.dataFrame = data;
-            // to choose witch data gonna be showing in the table
-            this.InitializeVisualization();
-            // puts data into the datasource table
-            this.dataSource = new MatTableDataSource(data);
-            // execute the visualisation function
-            this.executeVisualisation();
-            // add paginator to the data
-            this.dataSource.paginator = this.paginator;
-          },
-          error => {
-            console.log("error ", error);
-          }
-        );}
+          this.value = 0
+          this.DATACLEANING.sendFileAmexDebit(this.df1, this.df2, this.df3).subscribe(
+            data => {
+              this.value = 10
+              this.dataFrame = data;
+              this.date = this.date + "_AMEX_DEBIT"
+              // to choose witch data gonna be showing in the table
+              this.InitializeVisualization();
+              let re = ".";
+              data.forEach(element => {
+                element.Ecart = element.Ecart.replace(re, ",");
+                element.MontantSeaware = element.MontantSeaware.replace(re, ",");
+                element.MontantCepac = element.MontantCepac.replace(re, ",");
+              });
+              // puts data into the datasource table
+              this.dataSource = new MatTableDataSource(data);
+              // execute the visualisation function
+              this.executeVisualisation();
+              // add paginator to the data
+              this.dataSource.paginator = this.paginator;
+            },
+            error => {
+              console.log("error ", error);
+            }
+          );
+        }
         if (this.selections == "credit") {
           this.value = 0
           this.DATACLEANING.sendFileAmexCredit(this.df1, this.df2, this.df3).subscribe(
             data => {
               this.value = 10
               this.dataFrame = data;
+              this.date = this.date + "_AMEX_CREDIT"
               // to choose witch data gonna be showing in the table
               this.InitializeVisualization();
+              let re = ".";
+              data.forEach(element => {
+                element.Ecart = element.Ecart.replace(re, ",");
+                element.MontantSeaware = element.MontantSeaware.replace(re, ",");
+                element.MontantCepac = element.MontantCepac.replace(re, ",");
+              });
               // puts data into the datasource table
               this.dataSource = new MatTableDataSource(data);
               // execute the visualisation function
@@ -224,36 +239,52 @@ export class InternetComponent {
             error => {
               console.log("error ", error);
             }
-          );}
+          );
+        }
       }
       if (this.selection == "paypal") {
         if (this.selections == "debit") {
-        this.value = 0
-        this.DATACLEANING.sendFilePaypalDebit(this.df1, this.df2, this.df3).subscribe(
-          data => {
-            this.value = 10
-            this.dataFrame = data;
-            // to choose witch data gonna be showing in the table
-            this.InitializeVisualization();
-            // puts data into the datasource table
-            this.dataSource = new MatTableDataSource(data);
-            // execute the visualisation function
-            this.executeVisualisation();
-            // add paginator to the data
-            this.dataSource.paginator = this.paginator;
-          },
-          error => {
-            console.log("error ", error);
-          }
-        );}
+          this.value = 0
+          this.DATACLEANING.sendFilePaypalDebit(this.df1, this.df2, this.df3).subscribe(
+            data => {
+              this.value = 10
+              this.dataFrame = data;
+              this.date = this.date + "_PAYPAL_DEBIT"
+              // to choose witch data gonna be showing in the table
+              this.InitializeVisualization();
+              let re = ".";
+              data.forEach(element => {
+                element.Ecart = element.Ecart.replace(re, ",");
+                element.MontantSeaware = element.MontantSeaware.replace(re, ",");
+                element.MontantCepac = element.MontantCepac.replace(re, ",");
+              });
+              // puts data into the datasource table
+              this.dataSource = new MatTableDataSource(data);
+              // execute the visualisation function
+              this.executeVisualisation();
+              // add paginator to the data
+              this.dataSource.paginator = this.paginator;
+            },
+            error => {
+              console.log("error ", error);
+            }
+          );
+        }
         if (this.selections == "credit") {
           this.value = 0
           this.DATACLEANING.sendFilePaypalCredit(this.df1, this.df2, this.df3).subscribe(
             data => {
               this.value = 10
               this.dataFrame = data;
+              this.date = this.date + "_PAYPAL_CREDIT"
               // to choose witch data gonna be showing in the table
               this.InitializeVisualization();
+              let re = ".";
+              data.forEach(element => {
+                element.Ecart = element.Ecart.replace(re, ",");
+                element.MontantSeaware = element.MontantSeaware.replace(re, ",");
+                element.MontantCepac = element.MontantCepac.replace(re, ",");
+              });
               // puts data into the datasource table
               this.dataSource = new MatTableDataSource(data);
               // execute the visualisation function
@@ -264,7 +295,8 @@ export class InternetComponent {
             error => {
               console.log("error ", error);
             }
-          );}
+          );
+        }
       }
       if (this.selection == "cc") {
         if (this.selections == "debit") {
@@ -273,8 +305,15 @@ export class InternetComponent {
             data => {
               this.value = 10
               this.dataFrame = data;
+              this.date = this.date + "_CC_DEBIT"
               // to choose witch data gonna be showing in the table
               this.InitializeVisualization();
+              let re = ".";
+              data.forEach(element => {
+                element.Ecart = element.Ecart.replace(re, ",");
+                element.MontantSeaware = element.MontantSeaware.replace(re, ",");
+                element.MontantCepac = element.MontantCepac.replace(re, ",");
+              });
               // puts data into the datasource table
               this.dataSource = new MatTableDataSource(data);
               // execute the visualisation function
@@ -293,8 +332,15 @@ export class InternetComponent {
             data => {
               this.value = 10
               this.dataFrame = data;
+              this.date = this.date + "_CC_CREDIT"
               // to choose witch data gonna be showing in the table
               this.InitializeVisualization();
+              let re = ".";
+              data.forEach(element => {
+                element.Ecart = element.Ecart.replace(re, ",");
+                element.MontantSeaware = element.MontantSeaware.replace(re, ",");
+                element.MontantCepac = element.MontantCepac.replace(re, ",");
+              });
               // puts data into the datasource table
               this.dataSource = new MatTableDataSource(data);
               // execute the visualisation function
@@ -326,22 +372,22 @@ export class InternetComponent {
   createPhrase = () => {
 
     if (this.df1 != null && this.df2 != null && this.df3 != null) {
-        this.value = 0
-        this.DATACLEANING.sendPhrase(this.df1, this.df2, this.df3).subscribe(
-          data => {
-            this.value = 10
-            this.phrase = data;
-            console.log(this.phrase)
-          },
-          error => {
-            console.log("error ", error);
-          }
-        );
-      }
+      this.value = 0
+      this.DATACLEANING.sendPhrase(this.df1, this.df2, this.df3).subscribe(
+        data => {
+          this.value = 10
+          this.phrase = data;
+          console.log(this.phrase)
+        },
+        error => {
+          console.log("error ", error);
+        }
+      );
+    }
   }
 
-  deletePhrase(){
-    this.phrase=''
+  deletePhrase() {
+    this.phrase = ''
   }
   //observable for the checkBox execute every time the checkBox is changed
   executeVisualisation() {
