@@ -445,6 +445,9 @@ def Journal_Credit_Oui(df1,df2,df3,df4):
                         (df1['Utilisateur'].str.contains('BLO', na=False)) & (df1['Commentaires'].str.contains('AMEX', na=False))]
     RIA = Remboursement_INTERNET_Amex["Montant init."].sum()
 
+    Remboursement_Remise_Amex = df2[(df2["Type"] == "Crédit") & (df2["Moyen de paiement"] == "AMEX") ]
+    RRA = Remboursement_Remise_Amex["Montant du paiement"].sum()
+    
     # Credit
     Cheque_emettre=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CHK")]
     CE = Cheque_emettre["Montant init."].sum()
@@ -523,7 +526,7 @@ def Journal_Credit_Oui(df1,df2,df3,df4):
     credit = credit.append({'Comptes': "4673410", 'Gestions': "", 'Libelles': 'Chèque à émettre','NB':len(Cheque_emettre), 'Montants':round(CE,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4673420", 'Gestions': "", 'Libelles': 'Virement à émettre','NB':len(Virement_emettre), 'Montants':round(VE,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to C','NB':len(exist)+len(remb_Sav_Adv)+len(exist_B_to_C), 'Montants':round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Remboursement CEPAC AMEX','NB':len(Remboursement_INTERNET_Amex)+len(Remboursement_VAD_AMEX), 'Montants':round(RIA,2)+round(RVA,2)}, ignore_index=True)
+    credit = credit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Remboursement CEPAC AMEX','NB':len(Remboursement_Remise_Amex)+len(Remboursement_INTERNET_Amex)+len(Remboursement_VAD_AMEX), 'Montants':round(RRA,2)+round(RIA,2)+round(RVA,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "5113300", 'Gestions': "", 'Libelles': 'Remboursement CEPAC PAYPAL','NB':len(existppal), 'Montants':round(ppal_total,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "5113140", 'Gestions': "", 'Libelles': 'Remboursement TPE','NB':0, 'Montants':0}, ignore_index=True)
     credit = credit.append({'Comptes': "5113190", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to B','NB':0, 'Montants':0}, ignore_index=True)
@@ -599,6 +602,9 @@ def Journal_Credit_Non(df1,df2,df3,df4):
     Remboursement_INTERNET_Amex = df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CC") &
                         (df1['Utilisateur'].str.contains('BLO', na=False)) & (df1['Commentaires'].str.contains('AMEX', na=False))]
     RIA = Remboursement_INTERNET_Amex["Montant init."].sum()
+
+    Remboursement_Remise_Amex = df2[(df2["Type"] == "Crédit") & (df2["Moyen de paiement"] == "AMEX") ]
+    RRA = Remboursement_Remise_Amex["Montant du paiement"].sum()
 
     # Credit
     Cheque_emettre=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CHK")]
@@ -677,7 +683,7 @@ def Journal_Credit_Non(df1,df2,df3,df4):
     credit = credit.append({'Comptes': "4673410", 'Gestions': "", 'Libelles': 'Chèque à émettre','NB':len(Cheque_emettre), 'Montants':round(CE,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4673420", 'Gestions': "", 'Libelles': 'Virement à émettre','NB':len(Virement_emettre), 'Montants':round(VE,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to C','NB':len(exist)+len(remb_Sav_Adv)+len(exist_B_to_C), 'Montants':round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Remboursement CEPAC AMEX','NB':len(Remboursement_INTERNET_Amex)+len(Remboursement_VAD_AMEX), 'Montants':round(RIA,2)+round(RVA,2)}, ignore_index=True)
+    credit = credit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Remboursement CEPAC AMEX','NB':len(Remboursement_Remise_Amex)+len(Remboursement_INTERNET_Amex)+len(Remboursement_VAD_AMEX), 'Montants':round(RRA,2)+round(RIA,2)+round(RVA,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "5113300", 'Gestions': "", 'Libelles': 'Remboursement CEPAC PAYPAL','NB':len(existppal), 'Montants':round(ppal_total,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "5113140", 'Gestions': "", 'Libelles': 'Remboursement TPE','NB':0, 'Montants':0}, ignore_index=True)
     credit = credit.append({'Comptes': "5113190", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to B','NB':0, 'Montants':0}, ignore_index=True)
