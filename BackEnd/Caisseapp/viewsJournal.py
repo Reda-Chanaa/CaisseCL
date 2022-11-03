@@ -136,14 +136,14 @@ def Journal_Debit_Oui(df1,df2,df3,df4):
     debit = debit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Remboursement Internet','NB':len(Remboursement_INTERNET), 'Montants':round(RI,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Remboursement Internet PAYPAL','NB':len(Remboursement_INTERNET_PAYPAL), 'Montants':round(RIP,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Remboursement Internet AMEX','NB':len(Remboursement_INTERNET_Amex), 'Montants':round(RIA,2)}, ignore_index=True)
-    debit = debit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Remboursement VAD','NB':len(Remboursement_VAD_AMEX_sw)-len(Remboursement_VAD_AMEX), 'Montants':round(RV,2)-round(RVA,2)}, ignore_index=True)
+    debit = debit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Remboursement VAD','NB':len(Remboursement_VAD_AMEX_sw)-len(Remboursement_VAD_AMEX), 'Montants':round(round(RV,2)-round(RVA,2),2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Remboursement VAD AMEX','NB':len(Remboursement_VAD_AMEX), 'Montants':round(RVA,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': '','NB':'', 'Montants':''}, ignore_index=True)
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': '','NB':'', 'Montants':''}, ignore_index=True)
     debit = debit.append({'Comptes': "5812500", 'Gestions': "", 'Libelles': 'Versement CP chèque','NB':len(Cheque), 'Montants':round(C,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "5116000", 'Gestions': "", 'Libelles': 'Versement CP chèque vacances','NB':len(Cheque_vacance), 'Montants':round(CV,2)}, ignore_index=True)
-    debit = debit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Encaissement CB CEPAC','NB':result[1]+len(exist)+len(exist2)+len(exist_sav)+len(exist_adv), 'Montants':result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2)}, ignore_index=True)
-    debit = debit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Encaissement  CB CEPAC AMEX','NB':len(Emission_VAD_AMEX)+len(Emission_INTERNET_Amex), 'Montants':round(EIA,2)+round(EVA,2)}, ignore_index=True)
+    debit = debit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Encaissement CB CEPAC','NB':result[1]+len(exist)+len(exist2)+len(exist_sav)+len(exist_adv), 'Montants':round(result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2),2)}, ignore_index=True)
+    debit = debit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Encaissement  CB CEPAC AMEX','NB':len(Emission_VAD_AMEX)+len(Emission_INTERNET_Amex), 'Montants':round(round(EIA,2)+round(EVA,2),2)}, ignore_index=True)
     debit = debit.append({'Comptes': "5113300", 'Gestions': "", 'Libelles': 'Encaissement CB PAYPAL','NB':len(existppal), 'Montants':round(ppal_total,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "5113140", 'Gestions': "", 'Libelles': 'Encaissement CB par TPE','NB':0, 'Montants':0}, ignore_index=True)
     debit = debit.append({'Comptes': "5113190", 'Gestions': "", 'Libelles': 'Encaissement CEPAC par B to B','NB':0, 'Montants':0}, ignore_index=True)
@@ -162,6 +162,8 @@ def Journal_Debit_Oui(df1,df2,df3,df4):
     debit = debit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Excédent caisse','NB':0, 'Montants':0}, ignore_index=True)
     total=round(RA,2)+round(RI,2)+round(RIP,2)+round(RIA,2)+(round(RV,2)-round(RVA,2))+round(RVA,2)+round(C,2)+round(CV,2)+result[0]+round(cvd_total,2)+round(EIA,2)+round(EVA,2)+round(ppal_total,2)+0+0+0+0+0+round(AC,2)+0+0+0+0+round(CPN,2)+0+0+round(WOFF,2)+0+0
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
+    debit['Montants'] = debit['Montants'].astype(str)
+    debit['Montants'] = debit['Montants'].replace('.', ',')
 
     return debit
 
@@ -296,14 +298,14 @@ def Journal_Debit_Non(df1,df2,df3,df4):
     debit = debit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Remboursement Internet','NB':len(Remboursement_INTERNET), 'Montants':round(RI,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Remboursement Internet PAYPAL','NB':len(Remboursement_INTERNET_PAYPAL), 'Montants':round(RIP,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Remboursement Internet AMEX','NB':len(Remboursement_INTERNET_Amex), 'Montants':round(RIA,2)}, ignore_index=True)
-    debit = debit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Remboursement VAD','NB':len(Remboursement_VAD_AMEX_sw)-len(Remboursement_VAD_AMEX), 'Montants':round(RV,2)-round(RVA,2)}, ignore_index=True)
+    debit = debit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Remboursement VAD','NB':len(Remboursement_VAD_AMEX_sw)-len(Remboursement_VAD_AMEX), 'Montants':round(round(RV,2)-round(RVA,2),2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Remboursement VAD AMEX','NB':len(Remboursement_VAD_AMEX), 'Montants':round(RVA,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': '','NB':'', 'Montants':''}, ignore_index=True)
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': '','NB':'', 'Montants':''}, ignore_index=True)
     debit = debit.append({'Comptes': "5812500", 'Gestions': "", 'Libelles': 'Versement CP chèque','NB':len(Cheque), 'Montants':round(C,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "5116000", 'Gestions': "", 'Libelles': 'Versement CP chèque vacances','NB':len(Cheque_vacance), 'Montants':round(CV,2)}, ignore_index=True)
-    debit = debit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Encaissement CB CEPAC','NB':result[1]+len(exist)+len(exist2)+len(exist_sav)+len(exist_adv), 'Montants':result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2)}, ignore_index=True)
-    debit = debit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Encaissement  CB CEPAC AMEX','NB':len(Emission_VAD_AMEX)+len(Emission_INTERNET_Amex), 'Montants':round(EIA,2)+round(EVA,2)}, ignore_index=True)
+    debit = debit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Encaissement CB CEPAC','NB':result[1]+len(exist)+len(exist2)+len(exist_sav)+len(exist_adv), 'Montants':round(result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2),2)}, ignore_index=True)
+    debit = debit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Encaissement  CB CEPAC AMEX','NB':len(Emission_VAD_AMEX)+len(Emission_INTERNET_Amex), 'Montants':round(round(EIA,2)+round(EVA,2),2)}, ignore_index=True)
     debit = debit.append({'Comptes': "5113300", 'Gestions': "", 'Libelles': 'Encaissement CB PAYPAL','NB':len(existppal), 'Montants':round(ppal_total,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "5113140", 'Gestions': "", 'Libelles': 'Encaissement CB par TPE','NB':0, 'Montants':0}, ignore_index=True)
     debit = debit.append({'Comptes': "5113190", 'Gestions': "", 'Libelles': 'Encaissement CEPAC par B to B','NB':0, 'Montants':0}, ignore_index=True)
@@ -322,7 +324,8 @@ def Journal_Debit_Non(df1,df2,df3,df4):
     debit = debit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Excédent caisse','NB':0, 'Montants':0}, ignore_index=True)
     total=round(RA,2)+round(RI,2)+round(RIP,2)+round(RIA,2)+(round(RV,2)-round(RVA,2))+round(RVA,2)+round(C,2)+round(CV,2)+result[0]+round(cvd_total,2)+round(EIA,2)+round(EVA,2)+round(ppal_total,2)+0+0+0+0+0+round(AC,2)+0+0+0+0+round(CPN,2)+0+0+round(WOFF,2)+0+0
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
-
+    debit['Montants'] = debit['Montants'].astype(str)
+    debit['Montants'] = debit['Montants'].replace('.', ',')
     return debit
 
 def debitOui(request):
@@ -524,14 +527,14 @@ def Journal_Credit_Oui(df1,df2,df3,df4):
     credit = credit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Emission Internet','NB':len(Emission_INTERNET), 'Montants':round(EI,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Emission Internet PAYPAL','NB':len(Emission_INTERNET_PAYPAL), 'Montants':round(EIP,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Emission Internet AMEX','NB':len(Emission_INTERNET_Amex), 'Montants':round(EIA,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Emission VAD','NB':len(Emission_VAD_AMEX_sw)-len(Emission_VAD_AMEX), 'Montants':round(EV,2)-round(EVA,2)}, ignore_index=True)
+    credit = credit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Emission VAD','NB':len(Emission_VAD_AMEX_sw)-len(Emission_VAD_AMEX), 'Montants':round(round(EV,2)-round(EVA,2),2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Emission VAD AMEX','NB':len(Emission_VAD_AMEX), 'Montants':round(EVA,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4670800", 'Gestions': "", 'Libelles': 'Don La Marie Do','NB':len(Marie_Do), 'Montants':round(MD,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "", 'Gestions': "", 'Libelles': '','NB':'', 'Montants':''}, ignore_index=True)
     credit = credit.append({'Comptes': "4673410", 'Gestions': "", 'Libelles': 'Chèque à émettre','NB':len(Cheque_emettre), 'Montants':round(CE,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4673420", 'Gestions': "", 'Libelles': 'Virement à émettre','NB':len(Virement_emettre), 'Montants':round(VE,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to C','NB':len(exist)+len(remb_Sav_Adv)+len(exist_B_to_C), 'Montants':round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Remboursement CEPAC AMEX','NB':len(Remboursement_Remise_Amex)+len(Remboursement_INTERNET_Amex)+len(Remboursement_VAD_AMEX), 'Montants':round(RRA,2)+round(RIA,2)+round(RVA,2)}, ignore_index=True)
+    credit = credit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to C','NB':len(exist)+len(remb_Sav_Adv)+len(exist_B_to_C), 'Montants':round(round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2),2)}, ignore_index=True)
+    credit = credit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Remboursement CEPAC AMEX','NB':len(Remboursement_Remise_Amex)+len(Remboursement_INTERNET_Amex)+len(Remboursement_VAD_AMEX), 'Montants':round(round(RRA,2)+round(RIA,2)+round(RVA,2),2)}, ignore_index=True)
     credit = credit.append({'Comptes': "5113300", 'Gestions': "", 'Libelles': 'Remboursement CEPAC PAYPAL','NB':len(existppal), 'Montants':round(ppal_total,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "5113140", 'Gestions': "", 'Libelles': 'Remboursement TPE','NB':0, 'Montants':0}, ignore_index=True)
     credit = credit.append({'Comptes': "5113190", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to B','NB':0, 'Montants':0}, ignore_index=True)
@@ -552,7 +555,8 @@ def Journal_Credit_Oui(df1,df2,df3,df4):
     credit = credit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Déficit de caisse','NB':0, 'Montants':0}, ignore_index=True)
     total=round(EA,2)+round(EI,2)+round(EIP,2)+round(EIA,2)+(round(EV,2)-round(EVA,2))+round(EVA,2)+round(MD,2)+round(CE,2)+round(VE,2)+0+0+0+0+0+round(CPN,2)+0+0+0+0+0+0+round(FR,2)+round(AC,2)+0+0+0+0+0
     credit = credit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
-    
+    credit['Montants'] = credit['Montants'].astype(str)
+    credit['Montants'] = credit['Montants'].replace('.', ',')
 
     return credit
 
@@ -685,14 +689,14 @@ def Journal_Credit_Non(df1,df2,df3,df4):
     credit = credit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Emission Internet','NB':len(Emission_INTERNET), 'Montants':round(EI,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Emission Internet PAYPAL','NB':len(Emission_INTERNET_PAYPAL), 'Montants':round(EIP,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Emission Internet AMEX','NB':len(Emission_INTERNET_Amex), 'Montants':round(EIA,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Emission VAD','NB':len(Emission_VAD_AMEX_sw)-len(Emission_VAD_AMEX), 'Montants':round(EV,2)-round(EVA,2)}, ignore_index=True)
+    credit = credit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Emission VAD','NB':len(Emission_VAD_AMEX_sw)-len(Emission_VAD_AMEX), 'Montants':round(round(EV,2)-round(EVA,2),2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Emission VAD AMEX','NB':len(Emission_VAD_AMEX), 'Montants':round(EVA,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4670800", 'Gestions': "", 'Libelles': 'Don La Marie Do','NB':len(Marie_Do), 'Montants':round(MD,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "", 'Gestions': "", 'Libelles': '','NB':'', 'Montants':''}, ignore_index=True)
     credit = credit.append({'Comptes': "4673410", 'Gestions': "", 'Libelles': 'Chèque à émettre','NB':len(Cheque_emettre), 'Montants':round(CE,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4673420", 'Gestions': "", 'Libelles': 'Virement à émettre','NB':len(Virement_emettre), 'Montants':round(VE,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to C','NB':len(exist)+len(remb_Sav_Adv)+len(exist_B_to_C), 'Montants':round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Remboursement CEPAC AMEX','NB':len(Remboursement_Remise_Amex)+len(Remboursement_INTERNET_Amex)+len(Remboursement_VAD_AMEX), 'Montants':round(RRA,2)+round(RIA,2)+round(RVA,2)}, ignore_index=True)
+    credit = credit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to C','NB':len(exist)+len(remb_Sav_Adv)+len(exist_B_to_C), 'Montants':round(round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2),2)}, ignore_index=True)
+    credit = credit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Remboursement CEPAC AMEX','NB':len(Remboursement_Remise_Amex)+len(Remboursement_INTERNET_Amex)+len(Remboursement_VAD_AMEX), 'Montants':round(round(RRA,2)+round(RIA,2)+round(RVA,2),2)}, ignore_index=True)
     credit = credit.append({'Comptes': "5113300", 'Gestions': "", 'Libelles': 'Remboursement CEPAC PAYPAL','NB':len(existppal), 'Montants':round(ppal_total,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "5113140", 'Gestions': "", 'Libelles': 'Remboursement TPE','NB':0, 'Montants':0}, ignore_index=True)
     credit = credit.append({'Comptes': "5113190", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to B','NB':0, 'Montants':0}, ignore_index=True)
@@ -713,7 +717,8 @@ def Journal_Credit_Non(df1,df2,df3,df4):
     credit = credit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Déficit de caisse','NB':0, 'Montants':0}, ignore_index=True)
     total=round(EA,2)+round(EI,2)+round(EIP,2)+round(EIA,2)+(round(EV,2)-round(EVA,2))+round(EVA,2)+round(MD,2)+round(CE,2)+round(VE,2)+0+0+0+0+0+round(CPN,2)+0+0+0+0+0+0+round(FR,2)+round(AC,2)+0+0+0+0+0
     credit = credit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
-    
+    credit['Montants'] = credit['Montants'].astype(str)
+    credit['Montants'] = credit['Montants'].replace('.', ',')
 
     return credit
 
