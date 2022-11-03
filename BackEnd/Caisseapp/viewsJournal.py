@@ -77,7 +77,7 @@ def Journal_Debit_Oui(df1,df2,df3,df4):
     Cheque_vacance=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CV")]
     CV = Cheque_vacance["Montant init."].sum()
 
-    avoir_client=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "AVOIR CLIENT")]
+    avoir_client=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & ((df1["Mode pmt"] == "AVOIR CLIENT") | (df1["Mode pmt"] == "AVOIRCLIENT"))]
     AC = avoir_client["Montant init."].sum()
 
     coupon=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CPN")]
@@ -237,7 +237,7 @@ def Journal_Debit_Non(df1,df2,df3,df4):
     Cheque_vacance=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CV")]
     CV = Cheque_vacance["Montant init."].sum()
 
-    avoir_client=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "AVOIR CLIENT")]
+    avoir_client=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & ((df1["Mode pmt"] == "AVOIR CLIENT") | (df1["Mode pmt"] == "AVOIRCLIENT"))]
     AC = avoir_client["Montant init."].sum()
 
     coupon=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CPN")]
@@ -455,7 +455,7 @@ def Journal_Credit_Oui(df1,df2,df3,df4):
     Virement_emettre=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "VIREMENT")]
     VE = Virement_emettre["Montant init."].sum()
 
-    avoir_client=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "AVOIR CLIENT")]
+    avoir_client=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & ((df1["Mode pmt"] == "AVOIR CLIENT") | (df1["Mode pmt"] == "AVOIRCLIENT"))]
     AC = avoir_client["Montant init."].sum()
 
     coupon=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CPN")]
@@ -613,7 +613,7 @@ def Journal_Credit_Non(df1,df2,df3,df4):
     Virement_emettre=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "VIREMENT")]
     VE = Virement_emettre["Montant init."].sum()
 
-    avoir_client=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "AVOIR CLIENT")]
+    avoir_client=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & ((df1["Mode pmt"] == "AVOIR CLIENT") | (df1["Mode pmt"] == "AVOIRCLIENT"))]
     AC = avoir_client["Montant init."].sum()
 
     coupon=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CPN")]
