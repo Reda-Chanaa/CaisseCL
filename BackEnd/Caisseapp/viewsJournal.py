@@ -160,7 +160,7 @@ def Journal_Debit_Oui(df1,df2,df3,df4):
     debit = debit.append({'Comptes': "6580000", 'Gestions': "BOF01", 'Libelles': 'Write off (Ecart sur réservation non soldée < 5 euros)','NB':len(WriteOFF), 'Montants':round(WOFF,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Déficit de caisse','NB':0, 'Montants':0}, ignore_index=True)
     debit = debit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Excédent caisse','NB':0, 'Montants':0}, ignore_index=True)
-    total=round(RA,2)+round(RI,2)+round(RIP,2)+round(RIA,2)+(round(RV,2)-round(RVA,2))+round(RVA,2)+round(C,2)+round(CV,2)+result[0]+round(cvd_total,2)+round(EIA,2)+round(EVA,2)+round(ppal_total,2)+0+0+0+0+0+round(AC,2)+0+0+0+0+round(CPN,2)+0+0+round(WOFF,2)+0+0
+    total=round(RA,2)+round(RI,2)+round(RIP,2)+round(RIA,2)+(round(RV,2)-round(RVA,2))+round(RVA,2)+round(C,2)+round(CV,2)+round(result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2),2)+round(EIA,2)+round(EVA,2)+round(ppal_total,2)+0+0+0+0+round(AC,2)+0+0+0+0+round(CPN,2)+0+0+round(WOFF,2)+0+0
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
     debit['Montants'] = debit['Montants'].astype(str)
     debit['Montants'] = debit['Montants'].replace('.', ',')
@@ -322,7 +322,7 @@ def Journal_Debit_Non(df1,df2,df3,df4):
     debit = debit.append({'Comptes': "6580000", 'Gestions': "BOF01", 'Libelles': 'Write off (Ecart sur réservation non soldée < 5 euros)','NB':len(WriteOFF), 'Montants':round(WOFF,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Déficit de caisse','NB':0, 'Montants':0}, ignore_index=True)
     debit = debit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Excédent caisse','NB':0, 'Montants':0}, ignore_index=True)
-    total=round(RA,2)+round(RI,2)+round(RIP,2)+round(RIA,2)+(round(RV,2)-round(RVA,2))+round(RVA,2)+round(C,2)+round(CV,2)+result[0]+round(cvd_total,2)+round(EIA,2)+round(EVA,2)+round(ppal_total,2)+0+0+0+0+0+round(AC,2)+0+0+0+0+round(CPN,2)+0+0+round(WOFF,2)+0+0
+    total=round(RA,2)+round(RI,2)+round(RIP,2)+round(RIA,2)+(round(RV,2)-round(RVA,2))+round(RVA,2)+round(C,2)+round(CV,2)+round(result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2),2)+round(EIA,2)+round(EVA,2)+round(ppal_total,2)+0+0+0+0+round(AC,2)+0+0+0+0+round(CPN,2)+0+0+round(WOFF,2)+0+0
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
     debit['Montants'] = debit['Montants'].astype(str)
     debit['Montants'] = debit['Montants'].replace('.', ',')
@@ -553,7 +553,7 @@ def Journal_Credit_Oui(df1,df2,df3,df4):
     credit = credit.append({'Comptes': "6580000", 'Gestions': "BOF01", 'Libelles': 'Write off  non remboursable (<5€)','NB':len(WriteOFF), 'Montants':round(WOFF,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Excédent de caisse','NB':0, 'Montants':0}, ignore_index=True)
     credit = credit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Déficit de caisse','NB':0, 'Montants':0}, ignore_index=True)
-    total=round(EA,2)+round(EI,2)+round(EIP,2)+round(EIA,2)+(round(EV,2)-round(EVA,2))+round(EVA,2)+round(MD,2)+round(CE,2)+round(VE,2)+0+0+0+0+0+round(CPN,2)+0+0+0+0+0+0+round(FR,2)+round(AC,2)+0+0+0+0+0
+    total=round(EA,2)+round(EI,2)+round(EIP,2)+round(EIA,2)+(round(EV,2)-round(EVA,2))+round(EVA,2)+round(MD,2)+round(CE,2)+round(VE,2)+round(round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2),2)+round(round(RRA,2)+round(RIA,2)+round(RVA,2),2)+round(ppal_total,2)+0+0+0+round(CPN,2)+0+0+0+0+0+0+round(FR,2)+round(AC,2)+0+0+round(WOFF,2)+0+0
     credit = credit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
     credit['Montants'] = credit['Montants'].astype(str)
     credit['Montants'] = credit['Montants'].replace('.', ',')
@@ -715,7 +715,7 @@ def Journal_Credit_Non(df1,df2,df3,df4):
     credit = credit.append({'Comptes': "6580000", 'Gestions': "BOF01", 'Libelles': 'Write off  non remboursable (<5€)','NB':len(WriteOFF), 'Montants':round(WOFF,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Excédent de caisse','NB':0, 'Montants':0}, ignore_index=True)
     credit = credit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Déficit de caisse','NB':0, 'Montants':0}, ignore_index=True)
-    total=round(EA,2)+round(EI,2)+round(EIP,2)+round(EIA,2)+(round(EV,2)-round(EVA,2))+round(EVA,2)+round(MD,2)+round(CE,2)+round(VE,2)+0+0+0+0+0+round(CPN,2)+0+0+0+0+0+0+round(FR,2)+round(AC,2)+0+0+0+0+0
+    total=round(EA,2)+round(EI,2)+round(EIP,2)+round(EIA,2)+(round(EV,2)-round(EVA,2))+round(EVA,2)+round(MD,2)+round(CE,2)+round(VE,2)+round(round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2),2)+round(round(RRA,2)+round(RIA,2)+round(RVA,2),2)+round(ppal_total,2)+0+0+round(CPN,2)+0+0+0+0+0+0+round(FR,2)+round(AC,2)+0+0+round(WOFF,2)+0+0
     credit = credit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
     credit['Montants'] = credit['Montants'].astype(str)
     credit['Montants'] = credit['Montants'].replace('.', ',')
