@@ -110,9 +110,9 @@ def Journal_Debit_Oui(df1,df2,df3,df4):
 
     adv= df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] != "TERMS") & (df1["Mode pmt"] != "TO REFUND") &
                      (df1['Office Location'].str.contains('ADV', na=False)) & (df1["Mode pmt"] == "B2C TPEV")]
+    adv["Id. Externe"] = adv["Id. Externe"].astype('float')
     adv_remis=df2[(df2["Type"] == "Débit") & (df2["Moyen de paiement"] != "AMEX") & (df2["Moyen de paiement"] != "PAYPAL")]
-    adv_remis['Transaction'] = adv_remis['Transaction'].astype('string')
-    adv_remis['Commande'] = adv_remis['Commande'].astype('string')
+    adv_remis['Transaction'] = adv_remis['Transaction'].astype('float')
     print("adv_remis",len(adv_remis))
     exist_adv=adv_remis[adv_remis['Transaction'].isin(adv["Id. Externe"].values)]
     print("exist",len(exist_adv))
@@ -120,9 +120,9 @@ def Journal_Debit_Oui(df1,df2,df3,df4):
 
     sav= df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] != "TERMS") & (df1["Mode pmt"] != "TO REFUND") &
                      (df1['Office Location'].str.contains('SAV', na=False)) & (df1["Mode pmt"] == "CC")]
+    sav["Id. Externe"] = sav["Id. Externe"].astype('float')
     sav_remis=df2[(df2["Type"] == "Débit") & (df2["Moyen de paiement"] != "AMEX") & (df2["Moyen de paiement"] != "PAYPAL")]
-    sav_remis['Transaction'] = sav_remis['Transaction'].astype('string')
-    sav_remis['Commande'] = sav_remis['Commande'].astype('string')
+    sav_remis['Transaction'] = sav_remis['Transaction'].astype('float')
     print("sav_remis",len(sav_remis))
     exist_sav=sav_remis[sav_remis['Transaction'].isin(sav["Id. Externe"].values)]
     print("exist",len(exist_sav))
@@ -272,19 +272,22 @@ def Journal_Debit_Non(df1,df2,df3,df4):
 
     adv= df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] != "TERMS") & (df1["Mode pmt"] != "TO REFUND") &
                      (df1['Office Location'].str.contains('ADV', na=False)) & (df1["Mode pmt"] == "B2C TPEV")]
+    adv["Id. Externe"] = adv["Id. Externe"].astype('float')
+    print("adv",len(adv))
+    print(adv["Id. Externe"])
     adv_remis=df2[(df2["Type"] == "Débit") & (df2["Moyen de paiement"] != "AMEX") & (df2["Moyen de paiement"] != "PAYPAL")]
-    adv_remis['Transaction'] = adv_remis['Transaction'].astype('string')
-    adv_remis['Commande'] = adv_remis['Commande'].astype('string')
-    print("adv_remis",len(adv_remis))
+    adv_remis['Transaction'] = adv_remis['Transaction'].astype('float')
+    print("adv_remis1 : ",len(adv_remis))
+    print(adv_remis['Transaction'])
     exist_adv=adv_remis[adv_remis['Transaction'].isin(adv["Id. Externe"].values)]
-    print("exist",len(exist_adv))
+    print("exist1 : ",len(exist_adv))
     adv_total = exist_adv["Montant du paiement"].sum()
 
     sav= df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] != "TERMS") & (df1["Mode pmt"] != "TO REFUND") &
                      (df1['Office Location'].str.contains('SAV', na=False)) & (df1["Mode pmt"] == "CC")]
+    sav["Id. Externe"] = sav["Id. Externe"].astype('float')
     sav_remis=df2[(df2["Type"] == "Débit") & (df2["Moyen de paiement"] != "AMEX") & (df2["Moyen de paiement"] != "PAYPAL")]
-    sav_remis['Transaction'] = sav_remis['Transaction'].astype('string')
-    sav_remis['Commande'] = sav_remis['Commande'].astype('string')
+    sav_remis['Transaction'] = sav_remis['Transaction'].astype('float')
     print("sav_remis",len(sav_remis))
     exist_sav=sav_remis[sav_remis['Transaction'].isin(sav["Id. Externe"].values)]
     print("exist",len(exist_sav))
