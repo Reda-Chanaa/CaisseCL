@@ -460,7 +460,7 @@ def Journal_Credit_Oui(df1,df2,df3,df4):
     RIA = Remboursement_INTERNET_Amex["Montant init."].sum()
 
     
-    Remboursement_Remise_Amex = df2[(df2["Type"] == "Crédit") & (df2["Moyen de paiement"] == "AMEX")]
+    Remboursement_Remise_Amex = df3[(df3["Type"] == "Crédit") & (df3["Moyen de paiement"] == "AMEX")]
 
     if Remboursement_Remise_Amex.empty:
          RRA =0
