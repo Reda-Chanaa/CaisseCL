@@ -461,15 +461,20 @@ def Journal_Credit_Oui(df1,df2,df3,df4):
 
     
     Remboursement_Remise_Amex = df3[(df3["Type"] == "Crédit") & (df3["Moyen de paiement"] == "AMEX")]
-
+    test=df2[(df2["Type"] == "Crédit")]
+    test['Date du paiement'] = test['Date du paiement'].astype('datetime64[ns]')
+    date = max((test["Date du paiement"].dt.date))
     if Remboursement_Remise_Amex.empty:
          RRA =0
     else:
         Remboursement_Remise_Amex['Date du paiement'] = Remboursement_Remise_Amex['Date du paiement'].astype('datetime64[ns]')
         print(Remboursement_Remise_Amex)
         print('-_-_-_-_-_-_-_-_-_-_-',max(Remboursement_Remise_Amex["Date du paiement"].dt.date))
-        Remboursement_Remise_Amex=Remboursement_Remise_Amex[(Remboursement_Remise_Amex["Date du paiement"].dt.date >= max((Remboursement_Remise_Amex["Date du paiement"].dt.date)))]
-        RRA = Remboursement_Remise_Amex["Montant du paiement"].sum()
+        Remboursement_Remise_Amex=Remboursement_Remise_Amex[(Remboursement_Remise_Amex["Date du paiement"].dt.date >= date)]
+        if Remboursement_Remise_Amex.empty:
+            RRA =0
+        else:
+            RRA = Remboursement_Remise_Amex["Montant du paiement"].sum()
     
     
     # Credit
@@ -639,14 +644,20 @@ def Journal_Credit_Non(df1,df2,df3,df4):
     RIA = Remboursement_INTERNET_Amex["Montant init."].sum()
 
     Remboursement_Remise_Amex = df2[(df2["Type"] == "Crédit") & (df2["Moyen de paiement"] == "AMEX")]
+    test=df2[(df2["Type"] == "Crédit")]
+    test['Date du paiement'] = test['Date du paiement'].astype('datetime64[ns]')
+    date = max((test["Date du paiement"].dt.date))
     if Remboursement_Remise_Amex.empty:
          RRA =0
     else:
         Remboursement_Remise_Amex['Date du paiement'] = Remboursement_Remise_Amex['Date du paiement'].astype('datetime64[ns]')
         print(Remboursement_Remise_Amex)
         print('-_-_-_-_-_-_-_-_-_-_-',max(Remboursement_Remise_Amex["Date du paiement"].dt.date))
-        Remboursement_Remise_Amex=Remboursement_Remise_Amex[(Remboursement_Remise_Amex["Date du paiement"].dt.date >= max((Remboursement_Remise_Amex["Date du paiement"].dt.date)))]
-        RRA = Remboursement_Remise_Amex["Montant du paiement"].sum()
+        Remboursement_Remise_Amex=Remboursement_Remise_Amex[(Remboursement_Remise_Amex["Date du paiement"].dt.date >= date)]
+        if Remboursement_Remise_Amex.empty:
+            RRA =0
+        else:
+            RRA = Remboursement_Remise_Amex["Montant du paiement"].sum()
     # Credit
     Cheque_emettre=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CHK")]
     CE = Cheque_emettre["Montant init."].sum()
