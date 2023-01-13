@@ -3,25 +3,25 @@ services:
 
   backend:
     restart: always
-    container_name: backend
-    command : bash -c "python manage.py runserver 0.0.0.0:8000"
+    container_name: backend_caisses
+    command : bash -c "python manage.py runserver 0.0.0.0:7000"
     build:
       context: ./BackEnd/
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "7000:7000"
     networks:
       - db-net
 
   frontend:
     restart: always
       #command : nginx -g "daemon off"
-    container_name: frontend
+    container_name: frontend_caisses
     build:
       context: ./FrontEnd/
       dockerfile: Dockerfile.prod
     ports:
-      - "80:80"
+      - "8080:80"
     stdin_open: true
     depends_on:
       - backend

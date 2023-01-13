@@ -41,10 +41,12 @@ def Journal_Debit_Oui(df1,df2,df3,df4):
     Emission_VAD_AMEX_rem = df3[(df3["Type"] == "Débit") & (df3["Moyen de paiement"] == "AMEX") & (~df3["Info. compl."].str.contains('INT', na=False))]
     print(len(Emission_VAD_AMEX_rem))
     Emission_VAD_AMEX_rem['Transaction'] = Emission_VAD_AMEX_rem['Transaction'].astype('string')
+    Emission_VAD_AMEX_rem['Transaction'] = Emission_VAD_AMEX_rem['Transaction'].str.replace('\D+', '')
     
     Emission_VAD_AMEX_sw = df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] != "TERMS") & (df1["Mode pmt"] != "TO REFUND") & (df1['Office Location'].str.contains('CVD', na=False))]
     print(len(Emission_VAD_AMEX_sw))
     Emission_VAD_AMEX_sw['Id. Externe'] = Emission_VAD_AMEX_sw['Id. Externe'].astype('string')
+    Emission_VAD_AMEX_sw['Id. Externe'] = Emission_VAD_AMEX_sw['Id. Externe'].str.replace('\D+', '')
     EV=Emission_VAD_AMEX_sw["Montant init."].sum()
     
     Emission_VAD_AMEX=Emission_VAD_AMEX_rem[Emission_VAD_AMEX_rem['Transaction'].isin(Emission_VAD_AMEX_sw["Id. Externe"].values)]
@@ -77,7 +79,7 @@ def Journal_Debit_Oui(df1,df2,df3,df4):
     Cheque_vacance=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CV")]
     CV = Cheque_vacance["Montant init."].sum()
 
-    avoir_client=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "AVOIR CLIENT")]
+    avoir_client=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & ((df1["Mode pmt"] == "AVOIR CLIENT") | (df1["Mode pmt"] == "AVOIRCLIENT"))]
     AC = avoir_client["Montant init."].sum()
 
     coupon=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CPN")]
@@ -110,9 +112,9 @@ def Journal_Debit_Oui(df1,df2,df3,df4):
 
     adv= df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] != "TERMS") & (df1["Mode pmt"] != "TO REFUND") &
                      (df1['Office Location'].str.contains('ADV', na=False)) & (df1["Mode pmt"] == "B2C TPEV")]
+    adv["Id. Externe"] = adv["Id. Externe"].astype('float')
     adv_remis=df2[(df2["Type"] == "Débit") & (df2["Moyen de paiement"] != "AMEX") & (df2["Moyen de paiement"] != "PAYPAL")]
-    adv_remis['Transaction'] = adv_remis['Transaction'].astype('string')
-    adv_remis['Commande'] = adv_remis['Commande'].astype('string')
+    adv_remis['Transaction'] = adv_remis['Transaction'].astype('float')
     print("adv_remis",len(adv_remis))
     exist_adv=adv_remis[adv_remis['Transaction'].isin(adv["Id. Externe"].values)]
     print("exist",len(exist_adv))
@@ -120,9 +122,9 @@ def Journal_Debit_Oui(df1,df2,df3,df4):
 
     sav= df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] != "TERMS") & (df1["Mode pmt"] != "TO REFUND") &
                      (df1['Office Location'].str.contains('SAV', na=False)) & (df1["Mode pmt"] == "CC")]
+    sav["Id. Externe"] = sav["Id. Externe"].astype('float')
     sav_remis=df2[(df2["Type"] == "Débit") & (df2["Moyen de paiement"] != "AMEX") & (df2["Moyen de paiement"] != "PAYPAL")]
-    sav_remis['Transaction'] = sav_remis['Transaction'].astype('string')
-    sav_remis['Commande'] = sav_remis['Commande'].astype('string')
+    sav_remis['Transaction'] = sav_remis['Transaction'].astype('float')
     print("sav_remis",len(sav_remis))
     exist_sav=sav_remis[sav_remis['Transaction'].isin(sav["Id. Externe"].values)]
     print("exist",len(exist_sav))
@@ -136,14 +138,14 @@ def Journal_Debit_Oui(df1,df2,df3,df4):
     debit = debit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Remboursement Internet','NB':len(Remboursement_INTERNET), 'Montants':round(RI,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Remboursement Internet PAYPAL','NB':len(Remboursement_INTERNET_PAYPAL), 'Montants':round(RIP,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Remboursement Internet AMEX','NB':len(Remboursement_INTERNET_Amex), 'Montants':round(RIA,2)}, ignore_index=True)
-    debit = debit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Remboursement VAD','NB':len(Remboursement_VAD_AMEX_sw)-len(Remboursement_VAD_AMEX), 'Montants':round(RV,2)-round(RVA,2)}, ignore_index=True)
+    debit = debit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Remboursement VAD','NB':len(Remboursement_VAD_AMEX_sw)-len(Remboursement_VAD_AMEX), 'Montants':round(round(RV,2)-round(RVA,2),2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Remboursement VAD AMEX','NB':len(Remboursement_VAD_AMEX), 'Montants':round(RVA,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': '','NB':'', 'Montants':''}, ignore_index=True)
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': '','NB':'', 'Montants':''}, ignore_index=True)
     debit = debit.append({'Comptes': "5812500", 'Gestions': "", 'Libelles': 'Versement CP chèque','NB':len(Cheque), 'Montants':round(C,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "5116000", 'Gestions': "", 'Libelles': 'Versement CP chèque vacances','NB':len(Cheque_vacance), 'Montants':round(CV,2)}, ignore_index=True)
-    debit = debit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Encaissement CB CEPAC','NB':result[1]+len(exist)+len(exist2)+len(exist_sav)+len(exist_adv), 'Montants':result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2)}, ignore_index=True)
-    debit = debit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Encaissement  CB CEPAC AMEX','NB':len(Emission_VAD_AMEX)+len(Emission_INTERNET_Amex), 'Montants':round(EIA,2)+round(EVA,2)}, ignore_index=True)
+    debit = debit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Encaissement CB CEPAC','NB':result[1]+len(exist)+len(exist2)+len(exist_sav)+len(exist_adv), 'Montants':round(result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2),2)}, ignore_index=True)
+    debit = debit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Encaissement  CB CEPAC AMEX','NB':len(Emission_VAD_AMEX)+len(Emission_INTERNET_Amex), 'Montants':round(round(EIA,2)+round(EVA,2),2)}, ignore_index=True)
     debit = debit.append({'Comptes': "5113300", 'Gestions': "", 'Libelles': 'Encaissement CB PAYPAL','NB':len(existppal), 'Montants':round(ppal_total,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "5113140", 'Gestions': "", 'Libelles': 'Encaissement CB par TPE','NB':0, 'Montants':0}, ignore_index=True)
     debit = debit.append({'Comptes': "5113190", 'Gestions': "", 'Libelles': 'Encaissement CEPAC par B to B','NB':0, 'Montants':0}, ignore_index=True)
@@ -160,8 +162,10 @@ def Journal_Debit_Oui(df1,df2,df3,df4):
     debit = debit.append({'Comptes': "6580000", 'Gestions': "BOF01", 'Libelles': 'Write off (Ecart sur réservation non soldée < 5 euros)','NB':len(WriteOFF), 'Montants':round(WOFF,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Déficit de caisse','NB':0, 'Montants':0}, ignore_index=True)
     debit = debit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Excédent caisse','NB':0, 'Montants':0}, ignore_index=True)
-    total=round(RA,2)+round(RI,2)+round(RIP,2)+round(RIA,2)+(round(RV,2)-round(RVA,2))+round(RVA,2)+round(C,2)+round(CV,2)+result[0]+round(cvd_total,2)+round(EIA,2)+round(EVA,2)+round(ppal_total,2)+0+0+0+0+0+round(AC,2)+0+0+0+0+round(CPN,2)+0+0+round(WOFF,2)+0+0
+    total=round(RA,2)+round(RI,2)+round(RIP,2)+round(RIA,2)+(round(RV,2)-round(RVA,2))+round(RVA,2)+round(C,2)+round(CV,2)+round(result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2),2)+round(EIA,2)+round(EVA,2)+round(ppal_total,2)+0+0+0+0+round(AC,2)+0+0+0+0+round(CPN,2)+0+0+round(WOFF,2)+0+0
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
+    debit['Montants'] = debit['Montants'].astype(str)
+    debit['Montants'] = debit['Montants'].replace('.', ',')
 
     return debit
 
@@ -201,14 +205,17 @@ def Journal_Debit_Non(df1,df2,df3,df4):
     Emission_VAD_AMEX_rem = df2[(df2["Type"] == "Débit") & (df2["Moyen de paiement"] == "AMEX") & (~df2["Info. compl."].str.contains('INT', na=False))]
     print(len(Emission_VAD_AMEX_rem))
     Emission_VAD_AMEX_rem['Transaction'] = Emission_VAD_AMEX_rem['Transaction'].astype('string')
+    Emission_VAD_AMEX_rem['Transaction'] = Emission_VAD_AMEX_rem['Transaction'].str.replace('\D+', '')
     
     Emission_VAD_AMEX_sw = df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] != "TERMS") & (df1["Mode pmt"] != "TO REFUND") & (df1['Office Location'].str.contains('CVD', na=False))]
     print(len(Emission_VAD_AMEX_sw))
+
     Emission_VAD_AMEX_sw['Id. Externe'] = Emission_VAD_AMEX_sw['Id. Externe'].astype('string')
+    Emission_VAD_AMEX_sw['Id. Externe'] = Emission_VAD_AMEX_sw['Id. Externe'].str.replace('\D+', '')
     EV=Emission_VAD_AMEX_sw["Montant init."].sum()
     
     Emission_VAD_AMEX=Emission_VAD_AMEX_rem[Emission_VAD_AMEX_rem['Transaction'].isin(Emission_VAD_AMEX_sw["Id. Externe"].values)]
-    print(len(Emission_VAD_AMEX))
+    print("hello ",len(Emission_VAD_AMEX))
     EVA=Emission_VAD_AMEX["Montant du paiement"].sum()
 
     Marie_Do = df4[(df4["IS_VALID"]=="Y")]
@@ -237,7 +244,7 @@ def Journal_Debit_Non(df1,df2,df3,df4):
     Cheque_vacance=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CV")]
     CV = Cheque_vacance["Montant init."].sum()
 
-    avoir_client=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "AVOIR CLIENT")]
+    avoir_client=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & ((df1["Mode pmt"] == "AVOIR CLIENT") | (df1["Mode pmt"] == "AVOIRCLIENT"))]
     AC = avoir_client["Montant init."].sum()
 
     coupon=df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CPN")]
@@ -247,6 +254,7 @@ def Journal_Debit_Non(df1,df2,df3,df4):
     WOFF = WriteOFF["Montant init."].sum()
 
     result=phrase(df1,df2,df3)
+    print("phrase",result)
     Emission_ADMV = df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] != "TERMS") & (df1["Mode pmt"] != "TO REFUND") &
                      ((df1['Office Location'].str.contains('SAV', na=False)) | (df1['Office Location'].str.contains('ADV', na=False)))]
     EA = Emission_ADMV["Montant init."].sum()
@@ -270,19 +278,22 @@ def Journal_Debit_Non(df1,df2,df3,df4):
 
     adv= df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] != "TERMS") & (df1["Mode pmt"] != "TO REFUND") &
                      (df1['Office Location'].str.contains('ADV', na=False)) & (df1["Mode pmt"] == "B2C TPEV")]
+    adv["Id. Externe"] = adv["Id. Externe"].astype('float')
+    print("adv",len(adv))
+    print(adv["Id. Externe"])
     adv_remis=df2[(df2["Type"] == "Débit") & (df2["Moyen de paiement"] != "AMEX") & (df2["Moyen de paiement"] != "PAYPAL")]
-    adv_remis['Transaction'] = adv_remis['Transaction'].astype('string')
-    adv_remis['Commande'] = adv_remis['Commande'].astype('string')
-    print("adv_remis",len(adv_remis))
+    adv_remis['Transaction'] = adv_remis['Transaction'].astype('float')
+    print("adv_remis1 : ",len(adv_remis))
+    print(adv_remis['Transaction'])
     exist_adv=adv_remis[adv_remis['Transaction'].isin(adv["Id. Externe"].values)]
-    print("exist",len(exist_adv))
+    print("exist1 : ",len(exist_adv))
     adv_total = exist_adv["Montant du paiement"].sum()
 
     sav= df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] != "TERMS") & (df1["Mode pmt"] != "TO REFUND") &
                      (df1['Office Location'].str.contains('SAV', na=False)) & (df1["Mode pmt"] == "CC")]
+    sav["Id. Externe"] = sav["Id. Externe"].astype('float')
     sav_remis=df2[(df2["Type"] == "Débit") & (df2["Moyen de paiement"] != "AMEX") & (df2["Moyen de paiement"] != "PAYPAL")]
-    sav_remis['Transaction'] = sav_remis['Transaction'].astype('string')
-    sav_remis['Commande'] = sav_remis['Commande'].astype('string')
+    sav_remis['Transaction'] = sav_remis['Transaction'].astype('float')
     print("sav_remis",len(sav_remis))
     exist_sav=sav_remis[sav_remis['Transaction'].isin(sav["Id. Externe"].values)]
     print("exist",len(exist_sav))
@@ -296,14 +307,14 @@ def Journal_Debit_Non(df1,df2,df3,df4):
     debit = debit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Remboursement Internet','NB':len(Remboursement_INTERNET), 'Montants':round(RI,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Remboursement Internet PAYPAL','NB':len(Remboursement_INTERNET_PAYPAL), 'Montants':round(RIP,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Remboursement Internet AMEX','NB':len(Remboursement_INTERNET_Amex), 'Montants':round(RIA,2)}, ignore_index=True)
-    debit = debit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Remboursement VAD','NB':len(Remboursement_VAD_AMEX_sw)-len(Remboursement_VAD_AMEX), 'Montants':round(RV,2)-round(RVA,2)}, ignore_index=True)
+    debit = debit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Remboursement VAD','NB':len(Remboursement_VAD_AMEX_sw)-len(Remboursement_VAD_AMEX), 'Montants':round(round(RV,2)-round(RVA,2),2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Remboursement VAD AMEX','NB':len(Remboursement_VAD_AMEX), 'Montants':round(RVA,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': '','NB':'', 'Montants':''}, ignore_index=True)
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': '','NB':'', 'Montants':''}, ignore_index=True)
     debit = debit.append({'Comptes': "5812500", 'Gestions': "", 'Libelles': 'Versement CP chèque','NB':len(Cheque), 'Montants':round(C,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "5116000", 'Gestions': "", 'Libelles': 'Versement CP chèque vacances','NB':len(Cheque_vacance), 'Montants':round(CV,2)}, ignore_index=True)
-    debit = debit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Encaissement CB CEPAC','NB':result[1]+len(exist)+len(exist2)+len(exist_sav)+len(exist_adv), 'Montants':result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2)}, ignore_index=True)
-    debit = debit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Encaissement  CB CEPAC AMEX','NB':len(Emission_VAD_AMEX)+len(Emission_INTERNET_Amex), 'Montants':round(EIA,2)+round(EVA,2)}, ignore_index=True)
+    debit = debit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Encaissement CB CEPAC','NB':result[1]+len(exist)+len(exist2)+len(exist_sav)+len(exist_adv), 'Montants':round(result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2),2)}, ignore_index=True)
+    debit = debit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Encaissement  CB CEPAC AMEX','NB':len(Emission_VAD_AMEX)+len(Emission_INTERNET_Amex), 'Montants':round(round(EIA,2)+round(EVA,2),2)}, ignore_index=True)
     debit = debit.append({'Comptes': "5113300", 'Gestions': "", 'Libelles': 'Encaissement CB PAYPAL','NB':len(existppal), 'Montants':round(ppal_total,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "5113140", 'Gestions': "", 'Libelles': 'Encaissement CB par TPE','NB':0, 'Montants':0}, ignore_index=True)
     debit = debit.append({'Comptes': "5113190", 'Gestions': "", 'Libelles': 'Encaissement CEPAC par B to B','NB':0, 'Montants':0}, ignore_index=True)
@@ -320,9 +331,10 @@ def Journal_Debit_Non(df1,df2,df3,df4):
     debit = debit.append({'Comptes': "6580000", 'Gestions': "BOF01", 'Libelles': 'Write off (Ecart sur réservation non soldée < 5 euros)','NB':len(WriteOFF), 'Montants':round(WOFF,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Déficit de caisse','NB':0, 'Montants':0}, ignore_index=True)
     debit = debit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Excédent caisse','NB':0, 'Montants':0}, ignore_index=True)
-    total=round(RA,2)+round(RI,2)+round(RIP,2)+round(RIA,2)+(round(RV,2)-round(RVA,2))+round(RVA,2)+round(C,2)+round(CV,2)+result[0]+round(cvd_total,2)+round(EIA,2)+round(EVA,2)+round(ppal_total,2)+0+0+0+0+0+round(AC,2)+0+0+0+0+round(CPN,2)+0+0+round(WOFF,2)+0+0
+    total=round(RA,2)+round(RI,2)+round(RIP,2)+round(RIA,2)+(round(RV,2)-round(RVA,2))+round(RVA,2)+round(C,2)+round(CV,2)+round(result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2),2)+round(EIA,2)+round(EVA,2)+round(ppal_total,2)+0+0+0+0+round(AC,2)+0+0+0+0+round(CPN,2)+0+0+round(WOFF,2)+0+0
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
-
+    debit['Montants'] = debit['Montants'].astype(str)
+    debit['Montants'] = debit['Montants'].replace('.', ',')
     return debit
 
 def debitOui(request):
@@ -415,10 +427,12 @@ def Journal_Credit_Oui(df1,df2,df3,df4):
     Emission_VAD_AMEX_rem = df3[(df3["Type"] == "Débit") & (df3["Moyen de paiement"] == "AMEX") & (~df3["Info. compl."].str.contains('INT', na=False))]
     print(len(Emission_VAD_AMEX_rem))
     Emission_VAD_AMEX_rem['Transaction'] = Emission_VAD_AMEX_rem['Transaction'].astype('string')
+    Emission_VAD_AMEX_rem['Transaction'] = Emission_VAD_AMEX_rem['Transaction'].str.replace('\D+', '')
     
     Emission_VAD_AMEX_sw = df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] != "TERMS") & (df1["Mode pmt"] != "TO REFUND") & (df1['Office Location'].str.contains('CVD', na=False))]
     print(len(Emission_VAD_AMEX_sw))
     Emission_VAD_AMEX_sw['Id. Externe'] = Emission_VAD_AMEX_sw['Id. Externe'].astype('string')
+    Emission_VAD_AMEX_sw['Id. Externe'] = Emission_VAD_AMEX_sw['Id. Externe'].str.replace('\D+', '')
     EV=Emission_VAD_AMEX_sw["Montant init."].sum()
     
     Emission_VAD_AMEX=Emission_VAD_AMEX_rem[Emission_VAD_AMEX_rem['Transaction'].isin(Emission_VAD_AMEX_sw["Id. Externe"].values)]
@@ -445,6 +459,24 @@ def Journal_Credit_Oui(df1,df2,df3,df4):
                         (df1['Utilisateur'].str.contains('BLO', na=False)) & (df1['Commentaires'].str.contains('AMEX', na=False))]
     RIA = Remboursement_INTERNET_Amex["Montant init."].sum()
 
+    
+    Remboursement_Remise_Amex = df3[(df3["Type"] == "Crédit") & (df3["Moyen de paiement"] == "AMEX")]
+    test=df2[(df2["Type"] == "Crédit")]
+    test['Date du paiement'] = test['Date du paiement'].astype('datetime64[ns]')
+    date = max((test["Date du paiement"].dt.date))
+    if Remboursement_Remise_Amex.empty:
+         RRA =0
+    else:
+        Remboursement_Remise_Amex['Date du paiement'] = Remboursement_Remise_Amex['Date du paiement'].astype('datetime64[ns]')
+        print(Remboursement_Remise_Amex)
+        print('-_-_-_-_-_-_-_-_-_-_-',max(Remboursement_Remise_Amex["Date du paiement"].dt.date))
+        Remboursement_Remise_Amex=Remboursement_Remise_Amex[(Remboursement_Remise_Amex["Date du paiement"].dt.date >= date)]
+        if Remboursement_Remise_Amex.empty:
+            RRA =0
+        else:
+            RRA = Remboursement_Remise_Amex["Montant du paiement"].sum()
+    
+    
     # Credit
     Cheque_emettre=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CHK")]
     CE = Cheque_emettre["Montant init."].sum()
@@ -452,7 +484,7 @@ def Journal_Credit_Oui(df1,df2,df3,df4):
     Virement_emettre=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "VIREMENT")]
     VE = Virement_emettre["Montant init."].sum()
 
-    avoir_client=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "AVOIR CLIENT")]
+    avoir_client=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & ((df1["Mode pmt"] == "AVOIR CLIENT") | (df1["Mode pmt"] == "AVOIRCLIENT"))]
     AC = avoir_client["Montant init."].sum()
 
     coupon=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CPN")]
@@ -479,19 +511,27 @@ def Journal_Credit_Oui(df1,df2,df3,df4):
     cvd_total = exist["Montant du paiement"].sum()
     print("total cvd",cvd_total)
 
+    remb_Sav_Adv_tpe = df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") 
+                      & (((df1["Mode pmt"] == "CC TPE"))) & ((df1['Office Location'].str.contains('SAV', na=False)) | (df1['Office Location'].str.contains('ADV', na=False)))]
+    Rsa_tpe = remb_Sav_Adv_tpe["Montant init."].sum()
+    print("-------SAV + ADV en TPE ---------", Rsa_tpe)
+    print(len(remb_Sav_Adv_tpe))
+
     remb_Sav_Adv = df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") 
-                      & ((df1["Mode pmt"] == "CC") | ((df1["Mode pmt"] == "CC TPE"))) & ((df1['Office Location'].str.contains('SAV', na=False)) | (df1['Office Location'].str.contains('ADV', na=False)))]
+                      & ((df1["Mode pmt"] == "CC") | (df1["Mode pmt"] == "RB B2C TPEV")) & ((df1['Office Location'].str.contains('SAV', na=False)) | (df1['Office Location'].str.contains('ADV', na=False)))]
     Rsa = remb_Sav_Adv["Montant init."].sum()
-    print("-------SAV + ADV---------", Rsa)
+    print("-------SAV + ADV en B to C ---------", Rsa)
     print(len(remb_Sav_Adv))
 
     Remboursement_ADMV = df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") 
                       & (df1["Mode pmt"] == "CC") & (df1['Utilisateur'].str.contains('BLO', na=False)) & (~df1['Office Location'].str.contains('SAV', na=False)) & 
                       (~df1['Office Location'].str.contains('ADV', na=False)) & (~df1['Office Location'].str.contains('CVD', na=False))]
     Remboursement_ADMV['Num. Orig.'] = Remboursement_ADMV['Num. Orig.'].astype('string')
+    Remboursement_ADMV['Num. Orig.'] = Remboursement_ADMV['Num. Orig.'].str.replace('\D+', '')
     RA_internet = Remboursement_ADMV["Montant init."].sum()
     internet_remise = df2[(df2["Type"] == "Crédit") & (df2["Moyen de paiement"] != "AMEX") & (df2["Info. compl."].str.contains('INT', na=False))]
     internet_remise['Commande'] = internet_remise['Commande'].astype('string')
+    internet_remise['Commande'] = internet_remise['Commande'].str.replace('\D+', '')
     exist_B_to_C=internet_remise[internet_remise['Commande'].isin(Remboursement_ADMV["Num. Orig."].values)]
     B_to_C = exist_B_to_C["Montant du paiement"].sum()
     print("---------internet-------", B_to_C)
@@ -516,16 +556,16 @@ def Journal_Credit_Oui(df1,df2,df3,df4):
     credit = credit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Emission Internet','NB':len(Emission_INTERNET), 'Montants':round(EI,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Emission Internet PAYPAL','NB':len(Emission_INTERNET_PAYPAL), 'Montants':round(EIP,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Emission Internet AMEX','NB':len(Emission_INTERNET_Amex), 'Montants':round(EIA,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Emission VAD','NB':len(Emission_VAD_AMEX_sw)-len(Emission_VAD_AMEX), 'Montants':round(EV,2)-round(EVA,2)}, ignore_index=True)
+    credit = credit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Emission VAD','NB':len(Emission_VAD_AMEX_sw)-len(Emission_VAD_AMEX), 'Montants':round(round(EV,2)-round(EVA,2),2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Emission VAD AMEX','NB':len(Emission_VAD_AMEX), 'Montants':round(EVA,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4670800", 'Gestions': "", 'Libelles': 'Don La Marie Do','NB':len(Marie_Do), 'Montants':round(MD,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "", 'Gestions': "", 'Libelles': '','NB':'', 'Montants':''}, ignore_index=True)
     credit = credit.append({'Comptes': "4673410", 'Gestions': "", 'Libelles': 'Chèque à émettre','NB':len(Cheque_emettre), 'Montants':round(CE,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4673420", 'Gestions': "", 'Libelles': 'Virement à émettre','NB':len(Virement_emettre), 'Montants':round(VE,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to C','NB':len(exist)+len(remb_Sav_Adv)+len(exist_B_to_C), 'Montants':round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Remboursement CEPAC AMEX','NB':len(Remboursement_INTERNET_Amex)+len(Remboursement_VAD_AMEX), 'Montants':round(RIA,2)+round(RVA,2)}, ignore_index=True)
+    credit = credit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to C','NB':len(exist)+len(remb_Sav_Adv)+len(exist_B_to_C), 'Montants':round(round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2),2)}, ignore_index=True)
+    credit = credit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Remboursement CEPAC AMEX','NB':len(Remboursement_Remise_Amex)+len(Remboursement_INTERNET_Amex)+len(Remboursement_VAD_AMEX), 'Montants':round(round(RRA,2)+round(RIA,2)+round(RVA,2),2)}, ignore_index=True)
     credit = credit.append({'Comptes': "5113300", 'Gestions': "", 'Libelles': 'Remboursement CEPAC PAYPAL','NB':len(existppal), 'Montants':round(ppal_total,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "5113140", 'Gestions': "", 'Libelles': 'Remboursement TPE','NB':0, 'Montants':0}, ignore_index=True)
+    credit = credit.append({'Comptes': "5113140", 'Gestions': "", 'Libelles': 'Remboursement TPE','NB':len(remb_Sav_Adv_tpe), 'Montants':round(Rsa_tpe,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "5113190", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to B','NB':0, 'Montants':0}, ignore_index=True)
     credit = credit.append({'Comptes': "", 'Gestions': "", 'Libelles': '','NB':'', 'Montants':''}, ignore_index=True)
     credit = credit.append({'Comptes': "4786010", 'Gestions': "", 'Libelles': 'Coupons (annulation/rembst)','NB':len(coupon), 'Montants':round(CPN,2)}, ignore_index=True)
@@ -542,9 +582,10 @@ def Journal_Credit_Oui(df1,df2,df3,df4):
     credit = credit.append({'Comptes': "6580000", 'Gestions': "BOF01", 'Libelles': 'Write off  non remboursable (<5€)','NB':len(WriteOFF), 'Montants':round(WOFF,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Excédent de caisse','NB':0, 'Montants':0}, ignore_index=True)
     credit = credit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Déficit de caisse','NB':0, 'Montants':0}, ignore_index=True)
-    total=round(EA,2)+round(EI,2)+round(EIP,2)+round(EIA,2)+(round(EV,2)-round(EVA,2))+round(EVA,2)+round(MD,2)+round(CE,2)+round(VE,2)+0+0+0+0+0+round(CPN,2)+0+0+0+0+0+0+round(FR,2)+round(AC,2)+0+0+0+0+0
+    total=round(EA,2)+round(EI,2)+round(EIP,2)+round(EIA,2)+(round(EV,2)-round(EVA,2))+round(EVA,2)+round(MD,2)+round(CE,2)+round(VE,2)+round(round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2),2)+round(round(RRA,2)+round(RIA,2)+round(RVA,2),2)+round(ppal_total,2)+round(Rsa_tpe,2)+0+0+round(CPN,2)+0+0+0+0+0+0+round(FR,2)+round(AC,2)+0+0+round(WOFF,2)+0+0
     credit = credit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
-    
+    credit['Montants'] = credit['Montants'].astype(str)
+    credit['Montants'] = credit['Montants'].replace('.', ',')
 
     return credit
 
@@ -570,10 +611,12 @@ def Journal_Credit_Non(df1,df2,df3,df4):
     Emission_VAD_AMEX_rem = df2[(df2["Type"] == "Débit") & (df2["Moyen de paiement"] == "AMEX") & (~df2["Info. compl."].str.contains('INT', na=False))]
     print(len(Emission_VAD_AMEX_rem))
     Emission_VAD_AMEX_rem['Transaction'] = Emission_VAD_AMEX_rem['Transaction'].astype('string')
+    Emission_VAD_AMEX_rem['Transaction'] = Emission_VAD_AMEX_rem['Transaction'].str.replace('\D+', '')
     
     Emission_VAD_AMEX_sw = df1[(df1["Type Trans."] == "PMNT") & (df1["Statut"] == "OK") & (df1["Mode pmt"] != "TERMS") & (df1["Mode pmt"] != "TO REFUND") & (df1['Office Location'].str.contains('CVD', na=False))]
     print(len(Emission_VAD_AMEX_sw))
     Emission_VAD_AMEX_sw['Id. Externe'] = Emission_VAD_AMEX_sw['Id. Externe'].astype('string')
+    Emission_VAD_AMEX_sw['Id. Externe'] = Emission_VAD_AMEX_sw['Id. Externe'].str.replace('\D+', '')
     EV=Emission_VAD_AMEX_sw["Montant init."].sum()
     
     Emission_VAD_AMEX=Emission_VAD_AMEX_rem[Emission_VAD_AMEX_rem['Transaction'].isin(Emission_VAD_AMEX_sw["Id. Externe"].values)]
@@ -600,6 +643,21 @@ def Journal_Credit_Non(df1,df2,df3,df4):
                         (df1['Utilisateur'].str.contains('BLO', na=False)) & (df1['Commentaires'].str.contains('AMEX', na=False))]
     RIA = Remboursement_INTERNET_Amex["Montant init."].sum()
 
+    Remboursement_Remise_Amex = df2[(df2["Type"] == "Crédit") & (df2["Moyen de paiement"] == "AMEX")]
+    test=df2[(df2["Type"] == "Crédit")]
+    test['Date du paiement'] = test['Date du paiement'].astype('datetime64[ns]')
+    date = max((test["Date du paiement"].dt.date))
+    if Remboursement_Remise_Amex.empty:
+         RRA =0
+    else:
+        Remboursement_Remise_Amex['Date du paiement'] = Remboursement_Remise_Amex['Date du paiement'].astype('datetime64[ns]')
+        print(Remboursement_Remise_Amex)
+        print('-_-_-_-_-_-_-_-_-_-_-',max(Remboursement_Remise_Amex["Date du paiement"].dt.date))
+        Remboursement_Remise_Amex=Remboursement_Remise_Amex[(Remboursement_Remise_Amex["Date du paiement"].dt.date >= date)]
+        if Remboursement_Remise_Amex.empty:
+            RRA =0
+        else:
+            RRA = Remboursement_Remise_Amex["Montant du paiement"].sum()
     # Credit
     Cheque_emettre=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CHK")]
     CE = Cheque_emettre["Montant init."].sum()
@@ -607,7 +665,7 @@ def Journal_Credit_Non(df1,df2,df3,df4):
     Virement_emettre=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "VIREMENT")]
     VE = Virement_emettre["Montant init."].sum()
 
-    avoir_client=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "AVOIR CLIENT")]
+    avoir_client=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & ((df1["Mode pmt"] == "AVOIR CLIENT") | (df1["Mode pmt"] == "AVOIRCLIENT"))]
     AC = avoir_client["Montant init."].sum()
 
     coupon=df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") & (df1["Mode pmt"] == "CPN")]
@@ -633,19 +691,28 @@ def Journal_Credit_Non(df1,df2,df3,df4):
     cvd_total = exist["Montant du paiement"].sum()
     print("total cvd",cvd_total)
 
+    remb_Sav_Adv_tpe = df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") 
+                      & ((df1["Mode pmt"] == "CC TPE")) & ((df1['Office Location'].str.contains('SAV', na=False)) | (df1['Office Location'].str.contains('ADV', na=False)))]
+    Rsa_tpe = remb_Sav_Adv_tpe["Montant init."].sum()
+    print("-------SAV + ADV en TPE ---------", Rsa_tpe)
+    print(len(remb_Sav_Adv_tpe))
+
     remb_Sav_Adv = df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") 
-                      & ((df1["Mode pmt"] == "CC") | (df1["Mode pmt"] == "CC TPE")) & ((df1['Office Location'].str.contains('SAV', na=False)) | (df1['Office Location'].str.contains('ADV', na=False)))]
+                      & ((df1["Mode pmt"] == "CC") | (df1["Mode pmt"] == "RB B2C TPEV")) & ((df1['Office Location'].str.contains('SAV', na=False)) | (df1['Office Location'].str.contains('ADV', na=False)))]
     Rsa = remb_Sav_Adv["Montant init."].sum()
-    print("-------SAV + ADV---------", Rsa)
+    print("-------SAV + ADV en B to C ---------", Rsa)
     print(len(remb_Sav_Adv))
 
     Remboursement_ADMV = df1[((df1["Type Trans."] == "REFUND") | (df1["Type Trans."] == "MANRFND")) & (df1["Statut"] == "OK") 
                       & (df1["Mode pmt"] == "CC") & (df1['Utilisateur'].str.contains('BLO', na=False)) & (~df1['Office Location'].str.contains('SAV', na=False)) & 
                       (~df1['Office Location'].str.contains('ADV', na=False)) & (~df1['Office Location'].str.contains('CVD', na=False))]
     Remboursement_ADMV['Num. Orig.'] = Remboursement_ADMV['Num. Orig.'].astype('string')
-    RA_internet = Remboursement_ADMV["Montant init."].sum()
+    Remboursement_ADMV['Num. Orig.'] = Remboursement_ADMV['Num. Orig.'].str.replace('\D+', '')
+    print("nbr in internet",len(Remboursement_ADMV))
     internet_remise = df2[(df2["Type"] == "Crédit") & (df2["Moyen de paiement"] != "AMEX") & (df2["Info. compl."].str.contains('INT', na=False))]
     internet_remise['Commande'] = internet_remise['Commande'].astype('string')
+    internet_remise['Commande'] = internet_remise['Commande'].str.replace('\D+', '')
+    print("nbr in remisé",len(internet_remise))
     exist_B_to_C=internet_remise[internet_remise['Commande'].isin(Remboursement_ADMV["Num. Orig."].values)]
     B_to_C = exist_B_to_C["Montant du paiement"].sum()
     print("---------internet-------", B_to_C)
@@ -670,16 +737,16 @@ def Journal_Credit_Non(df1,df2,df3,df4):
     credit = credit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Emission Internet','NB':len(Emission_INTERNET), 'Montants':round(EI,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Emission Internet PAYPAL','NB':len(Emission_INTERNET_PAYPAL), 'Montants':round(EIP,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4787100", 'Gestions': "", 'Libelles': 'Emission Internet AMEX','NB':len(Emission_INTERNET_Amex), 'Montants':round(EIA,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Emission VAD','NB':len(Emission_VAD_AMEX_sw)-len(Emission_VAD_AMEX), 'Montants':round(EV,2)-round(EVA,2)}, ignore_index=True)
+    credit = credit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Emission VAD','NB':len(Emission_VAD_AMEX_sw)-len(Emission_VAD_AMEX), 'Montants':round(round(EV,2)-round(EVA,2),2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4781396", 'Gestions': "", 'Libelles': 'Emission VAD AMEX','NB':len(Emission_VAD_AMEX), 'Montants':round(EVA,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4670800", 'Gestions': "", 'Libelles': 'Don La Marie Do','NB':len(Marie_Do), 'Montants':round(MD,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "", 'Gestions': "", 'Libelles': '','NB':'', 'Montants':''}, ignore_index=True)
     credit = credit.append({'Comptes': "4673410", 'Gestions': "", 'Libelles': 'Chèque à émettre','NB':len(Cheque_emettre), 'Montants':round(CE,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4673420", 'Gestions': "", 'Libelles': 'Virement à émettre','NB':len(Virement_emettre), 'Montants':round(VE,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to C','NB':len(exist)+len(remb_Sav_Adv)+len(exist_B_to_C), 'Montants':round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Remboursement CEPAC AMEX','NB':len(Remboursement_INTERNET_Amex)+len(Remboursement_VAD_AMEX), 'Montants':round(RIA,2)+round(RVA,2)}, ignore_index=True)
+    credit = credit.append({'Comptes': "5113160", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to C','NB':len(exist)+len(remb_Sav_Adv)+len(exist_B_to_C), 'Montants':round(round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2),2)}, ignore_index=True)
+    credit = credit.append({'Comptes': "5113200", 'Gestions': "", 'Libelles': 'Remboursement CEPAC AMEX','NB':len(Remboursement_Remise_Amex)+len(Remboursement_INTERNET_Amex)+len(Remboursement_VAD_AMEX), 'Montants':round(round(RRA,2)+round(RIA,2)+round(RVA,2),2)}, ignore_index=True)
     credit = credit.append({'Comptes': "5113300", 'Gestions': "", 'Libelles': 'Remboursement CEPAC PAYPAL','NB':len(existppal), 'Montants':round(ppal_total,2)}, ignore_index=True)
-    credit = credit.append({'Comptes': "5113140", 'Gestions': "", 'Libelles': 'Remboursement TPE','NB':0, 'Montants':0}, ignore_index=True)
+    credit = credit.append({'Comptes': "5113140", 'Gestions': "", 'Libelles': 'Remboursement TPE','NB':len(remb_Sav_Adv_tpe), 'Montants':round(Rsa_tpe,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "5113190", 'Gestions': "", 'Libelles': 'Remboursement CEPAC B to B','NB':0, 'Montants':0}, ignore_index=True)
     credit = credit.append({'Comptes': "", 'Gestions': "", 'Libelles': '','NB':'', 'Montants':''}, ignore_index=True)
     credit = credit.append({'Comptes': "4786010", 'Gestions': "", 'Libelles': 'Coupons (annulation/rembst)','NB':len(coupon), 'Montants':round(CPN,2)}, ignore_index=True)
@@ -696,9 +763,10 @@ def Journal_Credit_Non(df1,df2,df3,df4):
     credit = credit.append({'Comptes': "6580000", 'Gestions': "BOF01", 'Libelles': 'Write off  non remboursable (<5€)','NB':len(WriteOFF), 'Montants':round(WOFF,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Excédent de caisse','NB':0, 'Montants':0}, ignore_index=True)
     credit = credit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Déficit de caisse','NB':0, 'Montants':0}, ignore_index=True)
-    total=round(EA,2)+round(EI,2)+round(EIP,2)+round(EIA,2)+(round(EV,2)-round(EVA,2))+round(EVA,2)+round(MD,2)+round(CE,2)+round(VE,2)+0+0+0+0+0+round(CPN,2)+0+0+0+0+0+0+round(FR,2)+round(AC,2)+0+0+0+0+0
+    total=round(EA,2)+round(EI,2)+round(EIP,2)+round(EIA,2)+(round(EV,2)-round(EVA,2))+round(EVA,2)+round(MD,2)+round(CE,2)+round(VE,2)+round(round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2),2)+round(round(RRA,2)+round(RIA,2)+round(RVA,2),2)+round(ppal_total,2)+round(Rsa_tpe,2)+0+round(CPN,2)+0+0+0+0+0+0+round(FR,2)+round(AC,2)+0+0+round(WOFF,2)+0+0
     credit = credit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
-    
+    credit['Montants'] = credit['Montants'].astype(str)
+    credit['Montants'] = credit['Montants'].replace('.', ',')
 
     return credit
 

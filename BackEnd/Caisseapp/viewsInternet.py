@@ -28,6 +28,13 @@ def Internet_files_AMEX_debit(df1, df2):
     merged["MontantCepac"] = merged['Montant du paiement']
     merged["Ecart"] = merged["MontantCepac"] - merged["MontantSeaware"]
     ecart = merged[merged["Ecart"] != 0]
+    merged['MontantSeaware'] = merged['MontantSeaware'].astype(str)
+    merged['MontantSeaware'] = merged['MontantSeaware'].replace('.', ',')
+    merged['MontantCepac'] = merged['MontantCepac'].astype(str)
+    merged['MontantCepac'] = merged['MontantCepac'].replace('.', ',')
+    merged['Ecart'] = merged['Ecart'].astype(str)
+    merged['Ecart'] = merged['Ecart'].replace('.', ',')
+    ecart = merged[merged["Ecart"] != '0.0']
     print(len(ecart))
 
     return ecart
@@ -77,6 +84,13 @@ def Internet_files_AMEX_Credit(df1, df2):
     merged["MontantCepac"] = merged['Montant du paiement']
     merged["Ecart"] = merged["MontantCepac"] - merged["MontantSeaware"]
     ecart = merged[merged["Ecart"] != 0]
+    merged['MontantSeaware'] = merged['MontantSeaware'].astype(str)
+    merged['MontantSeaware'] = merged['MontantSeaware'].replace('.', ',')
+    merged['MontantCepac'] = merged['MontantCepac'].astype(str)
+    merged['MontantCepac'] = merged['MontantCepac'].replace('.', ',')
+    merged['Ecart'] = merged['Ecart'].astype(str)
+    merged['Ecart'] = merged['Ecart'].replace('.', ',')
+    ecart = merged[merged["Ecart"] != '0.0']
     print(len(ecart))
 
     return ecart
@@ -127,6 +141,13 @@ def Internet_files_Cc_debit(df1, df2, df3):
     merged["MontantSeaware"] = merged['Montant init.']
     merged["MontantCepac"] = merged['Montant du paiement']
     merged["Ecart"] = merged["MontantCepac"] - merged["MontantSeaware"]
+    merged['MontantSeaware'] = merged['MontantSeaware'].astype(str)
+    merged['MontantSeaware'] = merged['MontantSeaware'].replace('.', ',')
+    merged['MontantCepac'] = merged['MontantCepac'].astype(str)
+    merged['MontantCepac'] = merged['MontantCepac'].replace('.', ',')
+    merged['Ecart'] = merged['Ecart'].astype(str)
+    merged['Ecart'] = merged['Ecart'].replace('.', ',')
+    ecart = merged[merged["Ecart"] != '0.0']
     ecart = merged[merged["Ecart"] != 0]
     print(len(ecart))
 
@@ -172,7 +193,13 @@ def Internet_files_Cc_credit(df1, df2, df3):
     merged["MontantSeaware"] = merged['Montant init.']
     merged["MontantCepac"] = merged['Montant du paiement']
     merged["Ecart"] = merged["MontantCepac"] - merged["MontantSeaware"]
-    ecart = merged[merged["Ecart"] != 0]
+    merged['MontantSeaware'] = merged['MontantSeaware'].astype(str)
+    merged['MontantSeaware'] = merged['MontantSeaware'].replace('.', ',')
+    merged['MontantCepac'] = merged['MontantCepac'].astype(str)
+    merged['MontantCepac'] = merged['MontantCepac'].replace('.', ',')
+    merged['Ecart'] = merged['Ecart'].astype(str)
+    merged['Ecart'] = merged['Ecart'].replace('.', ',')
+    ecart = merged[merged["Ecart"] != '0.0']
     print(len(ecart))
 
     return ecart
@@ -344,6 +371,13 @@ def Internet_files_Paypal_Debit(df1, df2):
     merged["MontantCepac"] = merged['Montant du paiement']
     merged["Ecart"] = merged["MontantCepac"] - merged["MontantSeaware"]
     ecart = merged[merged["Ecart"] != 0]
+    merged['MontantSeaware'] = merged['MontantSeaware'].astype(str)
+    merged['MontantSeaware'] = merged['MontantSeaware'].replace('.', ',')
+    merged['MontantCepac'] = merged['MontantCepac'].astype(str)
+    merged['MontantCepac'] = merged['MontantCepac'].replace('.', ',')
+    merged['Ecart'] = merged['Ecart'].astype(str)
+    merged['Ecart'] = merged['Ecart'].replace('.', ',')
+    ecart = merged[merged["Ecart"] != '0.0']
     print(len(ecart))
 
     return ecart
@@ -393,6 +427,13 @@ def Internet_files_Paypal_Credit(df1, df2):
     merged["MontantCepac"] = merged['Montant du paiement']
     merged["Ecart"] = merged["MontantCepac"] - merged["MontantSeaware"]
     ecart = merged[merged["Ecart"] != 0]
+    merged['MontantSeaware'] = merged['MontantSeaware'].astype(str)
+    merged['MontantSeaware'] = merged['MontantSeaware'].replace('.', ',')
+    merged['MontantCepac'] = merged['MontantCepac'].astype(str)
+    merged['MontantCepac'] = merged['MontantCepac'].replace('.', ',')
+    merged['Ecart'] = merged['Ecart'].astype(str)
+    merged['Ecart'] = merged['Ecart'].replace('.', ',')
+    ecart = merged[merged["Ecart"] != '0.0']
     print(len(ecart))
 
     return ecart

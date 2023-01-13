@@ -205,6 +205,10 @@ export class JournalComponent {
             this.dataFrame = data;
             // to choose witch data gonna be showing in the table
             this.InitializeVisualization();
+            let re = ".";
+              data.forEach(element => {
+                element.Montants = element.Montants.replace(re, ",");
+              });
             // puts data into the datasource table
             this.dataSource = new MatTableDataSource(data);
             // execute the visualisation function
@@ -225,6 +229,10 @@ export class JournalComponent {
             this.dataFrame = data;
             // to choose witch data gonna be showing in the table
             this.InitializeVisualization();
+            let re = ".";
+              data.forEach(element => {
+                element.Montants = element.Montants.replace(re, ",");
+              });
             // puts data into the datasource table
             this.dataSource = new MatTableDataSource(data);
             // execute the visualisation function
@@ -246,6 +254,10 @@ export class JournalComponent {
             this.dataFrame = data;
             // to choose witch data gonna be showing in the table
             this.InitializeVisualization();
+            let re = ".";
+              data.forEach(element => {
+                element.Montants = element.Montants.replace(re, ",");
+              });
             // puts data into the datasource table
             this.dataSource = new MatTableDataSource(data);
             // execute the visualisation function
@@ -266,6 +278,10 @@ export class JournalComponent {
             this.dataFrame = data;
             // to choose witch data gonna be showing in the table
             this.InitializeVisualization();
+            let re = ".";
+              data.forEach(element => {
+                element.Montants = element.Montants.replace(re, ",");
+              });
             // puts data into the datasource table
             this.dataSource = new MatTableDataSource(data);
             // execute the visualisation function
