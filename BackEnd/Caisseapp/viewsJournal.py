@@ -603,7 +603,7 @@ def Journal_Credit_Oui(df1,df2,df3,df4):
     credit = credit.append({'Comptes': "6580000", 'Gestions': "BOF01", 'Libelles': 'Write off  non remboursable (<5€)','NB':len(WriteOFF), 'Montants':round(WOFF,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Excédent de caisse','NB':0, 'Montants':0}, ignore_index=True)
     credit = credit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Déficit de caisse','NB':0, 'Montants':0}, ignore_index=True)
-    total=round(EA,2)+round(EI,2)+round(EIP,2)+round(EIA,2)+(round(EV,2)-round(EVA,2))+round(EVA,2)+round(MD,2)+round(CE,2)+round(VE,2)+round(round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2),2)+round(round(RRA,2)+round(RIA,2)+round(RVA,2),2)+round(ppal_total,2)+round(Rsa_tpe,2)+0+0+round(CPN,2)+0+0+0+0+0+0+round(FR,2)+round(AC,2)+0+0+round(WOFF,2)+0+0
+    total=round(EA,2)+round(EI,2)+round(EIP,2)+round(EIA,2)+(round(EV,2)-round(EVA,2))+round(EVA,2)+round(MD,2)+round(CE,2)+round(VE,2)+round(round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2),2)+round(round(RRA,2)+round(RIA,2)+round(RVA,2),2)+round(ppal_total,2)+round(Rsa_tpe,2)+round(B_to_B,2)+0+round(CPN,2)+0+0+0+0+0+0+round(FR,2)+round(AC,2)+0+0+round(WOFF,2)+0+0
     credit = credit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
     credit['Montants'] = credit['Montants'].astype(str)
     credit['Montants'] = credit['Montants'].replace('.', ',')
@@ -798,7 +798,7 @@ def Journal_Credit_Non(df1,df2,df3,df4):
     credit = credit.append({'Comptes': "6580000", 'Gestions': "BOF01", 'Libelles': 'Write off  non remboursable (<5€)','NB':len(WriteOFF), 'Montants':round(WOFF,2)}, ignore_index=True)
     credit = credit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Excédent de caisse','NB':0, 'Montants':0}, ignore_index=True)
     credit = credit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Déficit de caisse','NB':0, 'Montants':0}, ignore_index=True)
-    total=round(EA,2)+round(EI,2)+round(EIP,2)+round(EIA,2)+(round(EV,2)-round(EVA,2))+round(EVA,2)+round(MD,2)+round(CE,2)+round(VE,2)+round(round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2),2)+round(round(RRA,2)+round(RIA,2)+round(RVA,2),2)+round(ppal_total,2)+round(Rsa_tpe,2)+0+round(CPN,2)+0+0+0+0+0+0+round(FR,2)+round(AC,2)+0+0+round(WOFF,2)+0+0
+    total=round(EA,2)+round(EI,2)+round(EIP,2)+round(EIA,2)+(round(EV,2)-round(EVA,2))+round(EVA,2)+round(MD,2)+round(CE,2)+round(VE,2)+round(round(cvd_total,2)+round(Rsa,2)+round(B_to_C,2),2)+round(round(RRA,2)+round(RIA,2)+round(RVA,2),2)+round(ppal_total,2)+round(Rsa_tpe,2)+round(B_to_B,2)+round(CPN,2)+0+0+0+0+0+0+round(FR,2)+round(AC,2)+0+0+round(WOFF,2)+0+0
     credit = credit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
     credit['Montants'] = credit['Montants'].astype(str)
     credit['Montants'] = credit['Montants'].replace('.', ',')
