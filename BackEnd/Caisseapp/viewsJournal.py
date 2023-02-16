@@ -167,7 +167,7 @@ def Journal_Debit_Oui(df1,df2,df3,df4):
     debit = debit.append({'Comptes': "6580000", 'Gestions': "BOF01", 'Libelles': 'Write off (Ecart sur réservation non soldée < 5 euros)','NB':len(WriteOFF), 'Montants':round(WOFF,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Déficit de caisse','NB':0, 'Montants':0}, ignore_index=True)
     debit = debit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Excédent caisse','NB':0, 'Montants':0}, ignore_index=True)
-    total=round(RA,2)+round(RI,2)+round(RIP,2)+round(RIA,2)+(round(RV,2)-round(RVA,2))+round(RVA,2)+round(C,2)+round(CV,2)+round(result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2),2)+round(EIA,2)+round(EVA,2)+round(ppal_total,2)+0+0+0+0+round(AC,2)+0+0+0+0+round(CPN,2)+0+0+round(WOFF,2)+0+0
+    total=round(RA,2)+round(RI,2)+round(RIP,2)+round(RIA,2)+round(round(B_to_B,2)+round(round(RV,2)-round(RVA,2),2),2)+round(RVA,2)+round(C,2)+round(CV,2)+round(result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2),2)+round(EIA,2)+round(EVA,2)+round(ppal_total,2)+0+0+0+0+round(AC,2)+0+0+0+0+round(CPN,2)+0+0+round(WOFF,2)+0+0
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
     debit['Montants'] = debit['Montants'].astype(str)
     debit['Montants'] = debit['Montants'].replace('.', ',')
@@ -341,7 +341,7 @@ def Journal_Debit_Non(df1,df2,df3,df4):
     debit = debit.append({'Comptes': "6580000", 'Gestions': "BOF01", 'Libelles': 'Write off (Ecart sur réservation non soldée < 5 euros)','NB':len(WriteOFF), 'Montants':round(WOFF,2)}, ignore_index=True)
     debit = debit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Déficit de caisse','NB':0, 'Montants':0}, ignore_index=True)
     debit = debit.append({'Comptes': "4670160", 'Gestions': "", 'Libelles': 'Régularisation Excédent caisse','NB':0, 'Montants':0}, ignore_index=True)
-    total=round(RA,2)+round(RI,2)+round(RIP,2)+round(RIA,2)+(round(RV,2)-round(RVA,2))+round(RVA,2)+round(C,2)+round(CV,2)+round(result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2),2)+round(EIA,2)+round(EVA,2)+round(ppal_total,2)+0+0+0+0+round(AC,2)+0+0+0+0+round(CPN,2)+0+0+round(WOFF,2)+0+0
+    total=round(RA,2)+round(RI,2)+round(RIP,2)+round(RIA,2)+round(round(B_to_B,2)+round(round(RV,2)-round(RVA,2),2),2)+round(RVA,2)+round(C,2)+round(CV,2)+round(result[0]+round(cvd_total,2)+round(sav_total,2)+round(adv_total,2),2)+round(EIA,2)+round(EVA,2)+round(ppal_total,2)+0+0+0+0+round(AC,2)+0+0+0+0+round(CPN,2)+0+0+round(WOFF,2)+0+0
     debit = debit.append({'Comptes': "", 'Gestions': "", 'Libelles': 'TOTAL','NB':'', 'Montants':round(total,2)}, ignore_index=True)
     debit['Montants'] = debit['Montants'].astype(str)
     debit['Montants'] = debit['Montants'].replace('.', ',')
