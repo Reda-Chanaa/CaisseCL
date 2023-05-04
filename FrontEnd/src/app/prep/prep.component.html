@@ -1,0 +1,183 @@
+<div class="panel-header panel-header-sm">
+</div>
+<div class="main-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Liste des prépayés groupe</h4>
+                </div>
+                <div class="card-body">
+                    <br />
+                    <form class="ng-untouched ng-pristine ng-invalid" #myForm="ngForm" ngNativeValidate>
+                        <div>
+                            <label for="file"> <b>Fichier des prépayés :</b></label>
+                            <input type="file" #fileInput name="File Upload" id="csvFile1"
+                                (change)="fileChangeListener1($event)" accept=".csv" />
+                        </div>
+                        <br />
+                        Seuil des prépayés par navire :
+                        <br />
+                        <br />
+                        GOTA  : 100
+                        <br />
+                        BABU,  MORO,  ORBA  : 80
+                        <br />
+                        NEPI  : 70
+                        <br />
+                        VONA  : 40 
+                        <br />
+                        <br />
+                        <label>Choisissez le navire :</label>
+                        <br />
+                        <div>
+                            <mat-radio-group aria-label="Selectionner une option" [(ngModel)]="selections" (change)="filterTable()"
+                                name="selections">
+                                <mat-radio-button value='GOTA' name="GOTA">GOTA &nbsp;&nbsp;&nbsp;
+                                </mat-radio-button>
+                                <mat-radio-button value='BABU' name="BABU">BABU &nbsp;&nbsp;&nbsp;
+                                </mat-radio-button>
+                                <mat-radio-button value='VONA' name="VONA">VONA &nbsp;&nbsp;&nbsp;
+                                </mat-radio-button>
+                                <mat-radio-button value='NEPI' name="NEPI">NEPI &nbsp;&nbsp;&nbsp;
+                                </mat-radio-button>
+                                <mat-radio-button value='ORBA' name="ORBA">ORBA &nbsp;&nbsp;&nbsp;
+                                </mat-radio-button>
+                                <mat-radio-button value='MORO' name="MORO">MORO &nbsp;&nbsp;&nbsp;
+                                </mat-radio-button>&nbsp;&nbsp;&nbsp;
+                            </mat-radio-group>
+                        </div>
+                        <br />
+                        <br />
+
+                        <br />
+                        <br />
+                        <button (click)="deleteData()" [hidden]="dataSource.data.length === 0"
+                            style="background-color: #f44133;" class="btn pull-right">
+                            <b>Supprimer le tableau</b>
+                        </button>
+
+                        &nbsp;&nbsp;&nbsp;
+                        <button (click)="createFile()" [hidden]="dataSource.data.length !== 0"
+                            style="background-color: #f44133;" class="btn pull-right">
+                            <b>Générer le tableau</b>
+                        </button>
+                        <br />
+                    </form>
+                    <br />
+                    <br />
+                    <mat-spinner style="stroke: #f44133;" strokeWidth="3" [diameter]="100"
+                        *ngIf="dataSource.data.length === 0 && value === 0 ">
+                    </mat-spinner>
+                    <div #TABLE class="table-responsive" [hidden]="dataSource.data.length === 0">
+
+                        <!--Table-->
+
+                        <table id="reporting" mat-table bordered="true" class="mat-elevation-z8 table-hover table"
+                            [dataSource]="dataSource">
+
+                            <ng-container matColumnDef="date_depart">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    DATE
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.date_depart }} </b>
+                                </td>
+
+                            </ng-container>
+
+                            <ng-container matColumnDef="armateur">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    ARMATEUR
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.armateur }} </b>
+                                </td>
+
+                            </ng-container>
+
+                            <ng-container matColumnDef="reseau">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    RESEAU
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.reseau }} </b>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="code_navire">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    NAVIRE
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.code_navire }} </b>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="port_depart">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    PORT DEP
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.port_depart }} </b>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="port_arrivee">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    PORT ARR
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.port_arrivee }} </b>
+                                </td>
+
+                            </ng-container>
+
+                            <ng-container matColumnDef="res_type">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    RES TYPE
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.res_type }} </b>
+                                </td>
+
+                            </ng-container>
+
+                            <ng-container matColumnDef="code_addon">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    ADDON
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.code_addon }} </b>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="nb_pax_addon">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    NB PAX ADDON
+                                </th>
+                                <td mat-cell *matCellDef="let element" [style.color]="getNbColor(element.code_navire, element.nb_pax_addon)">
+                                    <b>{{element.nb_pax_addon }} </b>
+                                </td>
+                            </ng-container>
+
+                            <ng-container matColumnDef="total_pax_traversee">
+                                <th mat-header-cell *matHeaderCellDef>
+                                    TOTAL PAX TRAVERSEE
+                                </th>
+                                <td mat-cell *matCellDef="let element">
+                                    <b> {{ element.total_pax_traversee }} </b>
+                                </td>
+                            </ng-container>
+
+
+                            <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+                            <tr mat-row *matRowDef="let row; columns: getDisplayedColumns()"></tr>
+                        </table>
+                        <mat-paginator #MatPaginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

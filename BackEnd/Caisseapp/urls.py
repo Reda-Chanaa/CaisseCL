@@ -1,4 +1,5 @@
 from Caisseapp import viewsJournal
+from Caisseapp import viewsPrep
 from Caisseapp import viewsInternet
 from Caisseapp import viewsADV
 from Caisseapp import viewsSAV
@@ -7,6 +8,10 @@ from django.urls import re_path
 from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
+
+    #Prépayés
+    re_path(r'prepaye/', csrf_exempt(viewsPrep.prep), name='file'),
+
     #Journal Débit
     re_path(r'journal-debit-non/', csrf_exempt(viewsJournal.debitNon), name='file'),
     re_path(r'journal-debit-oui/', csrf_exempt(viewsJournal.debitOui), name='file'),

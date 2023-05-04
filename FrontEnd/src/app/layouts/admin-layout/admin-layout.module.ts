@@ -31,6 +31,7 @@ import { ADVComponent } from '../../adv/adv.component';
 import { CVDComponent } from '../../cvd/cvd.component';
 import { InternetComponent } from '../../internet/internet.component';
 import { JournalComponent } from '../../journal/journal.component';
+import { PrepComponent } from '../../prep/prep.component';
 
 @NgModule({
   imports: [
@@ -67,7 +68,8 @@ import { JournalComponent } from '../../journal/journal.component';
     SAVComponent,
     ADVComponent,
     CVDComponent,
-    JournalComponent
+    JournalComponent,
+    PrepComponent
   ]
 })
 
