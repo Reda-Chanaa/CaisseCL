@@ -42,7 +42,8 @@ export interface StatData {
   res_type: string;
   code_addon: string;
   nb_pax_addon: string;
-  total_pax_traversee: string
+  total_pax_traversee: string;
+  SEUIL:string
 
 }
 @Component({
@@ -66,11 +67,13 @@ export class PrepComponent {
 
   selection: string;
   selections: string;
+  selectionss: string;
 
   dataFrame: any;
   dataFrameFilter: any;
+  dataFrameFilter2: any;
 
-  displayedColumns: string[] = ['date_depart', 'armateur', 'reseau', 'code_navire', 'port_depart', 'port_arrivee', 'res_type', 'code_addon', 'nb_pax_addon', 'total_pax_traversee'];
+  displayedColumns: string[] = ['date_depart', 'armateur', 'reseau', 'code_navire', 'port_depart', 'port_arrivee', 'res_type', 'code_addon', 'nb_pax_addon', 'total_pax_traversee','SEUIL'];
 
   dataSource: MatTableDataSource<StatData>;
 
@@ -91,13 +94,20 @@ export class PrepComponent {
     this.df1 = $event.target.files[0]
   }
   getNbColor(ar: string, nb: number): string {
-    if ((ar === 'GOTA' && nb < 100) 
-    || (ar === 'BABU' && nb < 80) 
-    || (ar === 'MORO' && nb < 80) 
-    || (ar === 'ORBA' && nb < 80) 
-    || (ar === 'NEPI' && nb < 70) 
-    || (ar === 'VONA' && nb < 40)) 
-    {
+    if ((ar === 'GOTA' && nb < 100 && nb >= 50)
+      || (ar === 'BABU' && nb < 80 && nb >= 40)
+      || (ar === 'MORO' && nb < 80 && nb >= 40)
+      || (ar === 'ORBA' && nb < 80 && nb >= 40)
+      || (ar === 'NEPI' && nb < 70 && nb >= 35)
+      || (ar === 'VONA' && nb < 40 && nb >= 20)) {
+      return 'orange';
+    }
+    else if ((ar === 'GOTA' && nb < 50)
+      || (ar === 'BABU' && nb < 40)
+      || (ar === 'MORO' && nb < 40)
+      || (ar === 'ORBA' && nb < 40)
+      || (ar === 'NEPI' && nb < 35)
+      || (ar === 'VONA' && nb < 20)) {
       return 'green';
     }
     else {
@@ -112,39 +122,86 @@ export class PrepComponent {
   createFile = () => {
 
     if (this.df1 != null) {
-        this.value = 0
-        this.DATACLEANING.sendFile(this.df1).subscribe(
-          data => {
-            this.value = 10
-            this.dataFrame = data;
-            console.log(this.dataFrame)
-            // to choose witch data gonna be showing in the table
-            this.InitializeVisualization();
-            // puts data into the datasource table
-            this.dataSource = new MatTableDataSource(data);
-            // execute the visualisation function
-            this.executeVisualisation();
-            // add paginator to the data
-            this.dataSource.paginator = this.paginator;
-          },
-          error => {
-            console.log("error ", error);
-          }
-        );
+      this.value = 0
+      this.DATACLEANING.sendFile(this.df1).subscribe(
+        data => {
+          this.value = 10
+          this.dataFrame = data;
+          console.log(this.dataFrame)
+          // to choose witch data gonna be showing in the table
+          this.InitializeVisualization();
+          // puts data into the datasource table
+          this.dataSource = new MatTableDataSource(data);
+          // execute the visualisation function
+          this.executeVisualisation();
+          // add paginator to the data
+          this.dataSource.paginator = this.paginator;
+        },
+        error => {
+          console.log("error ", error);
+        }
+      );
     }
   }
 
   filterTable = () => {
     if (this.dataFrame != null) {
       this.dataFrameFilter = this.dataFrame.filter(item => item.code_navire === this.selections);
-      console.log(this.selections)
+      //console.log(this.selections)
       // to choose witch data gonna be showing in the table
+      if (this.selections == "TOUS") {
+        this.dataFrameFilter = this.dataFrame
+      }
       this.InitializeVisualization();
       this.dataSource = new MatTableDataSource(this.dataFrameFilter);
       this.executeVisualisation();
       // add paginator to the data
       this.dataSource.paginator = this.paginator;
+
     }
+  }
+
+  filterTables = () => {
+    if (this.dataFrameFilter != null && this.dataFrame==null ) {
+      this.dataFrameFilter2 = this.dataFrameFilter.filter(item => this.getNbColor(item.code_navire, item.nb_pax_addon) === this.selectionss);
+      //console.log(this.selectionss)
+      // to choose witch data gonna be showing in the table
+      if (this.selectionss == "TOUS") {
+        this.dataFrameFilter2 = this.dataFrameFilter
+      }
+      this.InitializeVisualization();
+      this.dataSource = new MatTableDataSource(this.dataFrameFilter2);
+      this.executeVisualisation();
+      // add paginator to the data
+      this.dataSource.paginator = this.paginator;
+    }
+    else if (this.dataFrame != null  && this.dataFrameFilter==null) {
+      this.dataFrameFilter2 = this.dataFrame.filter(item => this.getNbColor(item.code_navire, item.nb_pax_addon) === this.selectionss);
+      //console.log(this.selectionss)
+      // to choose witch data gonna be showing in the table
+      if (this.selectionss == "TOUS") {
+        this.dataFrameFilter2 = this.dataFrame
+      }
+      this.InitializeVisualization();
+      this.dataSource = new MatTableDataSource(this.dataFrameFilter2);
+      this.executeVisualisation();
+      // add paginator to the data
+      this.dataSource.paginator = this.paginator;
+    }
+    else if(this.dataFrame != null  || this.dataFrameFilter!=null) {
+      this.dataFrameFilter2 = this.dataFrameFilter.filter(item => this.getNbColor(item.code_navire, item.nb_pax_addon) === this.selectionss);
+      //console.log(this.selectionss)
+      // to choose witch data gonna be showing in the table
+      if (this.selectionss == "TOUS") {
+        this.dataFrameFilter2 = this.dataFrameFilter
+      }
+      this.InitializeVisualization();
+      this.dataSource = new MatTableDataSource(this.dataFrameFilter2);
+      this.executeVisualisation();
+      // add paginator to the data
+      this.dataSource.paginator = this.paginator;
+    }
+
   }
 
   //observable for the checkBox execute every time the checkBox is changed
@@ -159,7 +216,8 @@ export class PrepComponent {
     let c7: Observable<boolean> = this.code_addon.valueChanges;
     let c8: Observable<boolean> = this.nb_pax_addon.valueChanges;
     let c9: Observable<boolean> = this.total_pax_traversee.valueChanges;
-    merge(c0, c1, c2, c3, c4).subscribe(v => {
+    let c10: Observable<boolean> = this.SEUIL.valueChanges;
+    merge(c0, c1, c2, c3, c4, c5, c6, c7, c8, c9,c10).subscribe(v => {
       this.columnDefinitions[0].show = this.date_depart.value;
       this.columnDefinitions[1].show = this.armateur.value;
       this.columnDefinitions[2].show = this.reseau.value;
@@ -170,6 +228,7 @@ export class PrepComponent {
       this.columnDefinitions[7].show = this.code_addon.value;
       this.columnDefinitions[8].show = this.nb_pax_addon.value;
       this.columnDefinitions[9].show = this.total_pax_traversee.value;
+      this.columnDefinitions[10].show = this.SEUIL.value;
     });
   }
 
@@ -186,6 +245,7 @@ export class PrepComponent {
       { def: 'code_addon', label: 'code_addon', show: this.code_addon.value },
       { def: 'nb_pax_addon', label: 'nb_pax_addon', show: this.nb_pax_addon.value },
       { def: 'total_pax_traversee', label: 'total_pax_traversee', show: this.total_pax_traversee.value },
+      { def: 'SEUIL', label: 'SEUIL', show: this.SEUIL.value },
     ]
   }
 
@@ -201,6 +261,7 @@ export class PrepComponent {
     code_addon: new FormControl(true),
     nb_pax_addon: new FormControl(true),
     total_pax_traversee: new FormControl(true),
+    SEUIL: new FormControl(true),
   });
 
   // geting the checkBox
@@ -214,6 +275,7 @@ export class PrepComponent {
   code_addon = this.form.get('code_addon');
   nb_pax_addon = this.form.get('nb_pax_addon');
   total_pax_traversee = this.form.get('total_pax_traversee');
+  SEUIL = this.form.get('SEUIL');
 
   //Control column ordering and which columns are displayed.
   columnDefinitions = [
@@ -227,6 +289,7 @@ export class PrepComponent {
     { def: 'code_addon', label: 'code_addon', show: this.code_addon.value },
     { def: 'nb_pax_addon', label: 'nb_pax_addon', show: this.nb_pax_addon.value },
     { def: 'total_pax_traversee', label: 'total_pax_traversee', show: this.total_pax_traversee.value },
+    { def: 'SEUIL', label: 'SEUIL', show: this.SEUIL.value },
   ]
 
   // Filter data in witch columns is checked

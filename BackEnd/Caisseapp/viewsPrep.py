@@ -18,7 +18,30 @@ def Prepaye(df1):
     MenuGroupe = Groupe[(Groupe["code_addon"].str.contains("MENU GROUPE", na=False))]      
     print("MenuGroupe",len(MenuGroupe))
 
+    # Apply the assign_color function to create the new column
+    MenuGroupe['SEUIL'] = MenuGroupe.apply(assign_color, axis=1)
     return MenuGroupe
+
+def assign_color(row):
+    nb = row['nb_pax_addon']
+    line = row['code_navire']
+
+    if ((line == 'GOTA' and nb < 100 and nb >= 50)
+      or (line == 'BABU' and nb < 80 and nb >= 40)
+      or (line == 'MORO' and nb < 80 and nb >= 40)
+      or (line == 'ORBA' and nb < 80 and nb >= 40)
+      or (line == 'NEPI' and nb < 70 and nb >= 35)
+      or (line == 'VONA' and nb < 40 and nb >= 20)):
+        return 'ORANGE'
+    elif ((line == 'GOTA' and nb < 50)
+      or (line == 'BABU' and nb < 40)
+      or (line == 'MORO' and nb < 40)
+      or (line == 'ORBA' and nb < 40)
+      or (line == 'NEPI' and nb < 35)
+      or (line == 'VONA' and nb < 20)):
+        return 'VERT'
+    else:
+        return 'ROUGE'
 
 def prep(request):
     if request.method == 'POST':
